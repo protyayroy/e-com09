@@ -10,6 +10,7 @@ use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 use Intervention\Image\Exception\NotSupportedException;
@@ -50,18 +51,21 @@ class ProductController extends Controller
     //  ADD-EDIT PRODUCT
     public function productAddEdit(Request $request, $id = null)
     {
+        // Session::put('title', 'product');
+        // echo Session::get('title'); die;
         if ($id == "") {
             $title = 'Add Product';
             $products = new Product;
             $message = "Product has been inserted successfully";
+            $image = "";
 
         } else {
             $title = 'Edit Product';
             $products = Product::with('section', 'brand', 'category')->find($id);
             $message = "Product has been updateed successfully";
-
+            $image = $products->product_image;
         }
-        // dd($products);
+
         if($request->isMethod('post')){
 
             if($request->hasFile('product_image')){
@@ -91,9 +95,11 @@ class ProductController extends Controller
                     $image_path = 'images/product_image/'.$image_name;
                     Image::make($image_tmp)->resize(100, 100)->save($image_path);
                 }
-            } else{
-                $image_name = $products->product_image;
             }
+            else{
+                $image_name = $image;
+            }
+            // dd($image);
             $getSectionId = Category::find($request->section_id);
             $section_id = $getSectionId->section_id;
             // echo $section_id . '---'; echo $request->section_id; die; rand(1, 9999).'.'.

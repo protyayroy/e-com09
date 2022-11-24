@@ -29,10 +29,12 @@ class CategoryController extends Controller
             $title = "Add Category";
             $message = 'Category has been added successfully';
             $category = new Category;
+            $image = "";
         } else {
             $title = "Edit Category";
             $category = Category::find($id);
             $message = 'Category has been updated successfully';
+            $image = $category->image;
         }
 
         // $category = Category::with('parentcategory')->where('status', 1)->get()->toArray();
@@ -67,8 +69,9 @@ class CategoryController extends Controller
                     Image::make($image_tmp)->resize(100, 100)->save($image_path);
                 }
             } else{
-                $image_name = $category->image;
+                $image_name = $image;
             }
+            // dd($image_name);
             $request->validate([
                 'name' => 'required|regex:/^[a-zA-Z\s\-\p{Arabic}_]+$/u'
             ]);
