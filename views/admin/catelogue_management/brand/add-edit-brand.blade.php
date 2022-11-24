@@ -9,15 +9,14 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">{{$title}}</h4>
-                    <a href="{{ url('admin/brand') }}" class="btn btn-success float-right">Back</a>
+                    <a href="{{ url('admin/brand') }}" class="btn btn-warning float-right">Back</a>
                     <div class="clr"></div>
-                    
-                    <form class="forms-sample" action="@if(isset($brands['id']) && !empty($brands['id'])) {{ url('admin/add-edit-brand/'.$brands['id']) }} @else {{ url('admin/add-edit-brand') }}  @endif" method="post">
+                    <form class="forms-sample" action="{{ isset($brand['id']) && !empty($brand['id']) ? url('admin/add-edit-brand/'.$brand['id']) : url('admin/add-edit-brand') }}" method="post">
                         @csrf
                         <div class="form-group">
                             <label for="name">Brand Name:</label>
-                            <input type="text" class="form-control" id="name" name="name" 
-                            value="@if(isset($brands['id']) && !empty($brands['id'])) {{ $brands['name'] }} @else {{ old('name') }}  @endif">
+                            <input type="text" class="form-control" id="name" name="name"
+                            value="{{ isset($brand['id']) && !empty($brand['id']) ? $brand['name'] : old('name') }}">
                             @error('name')
                             <div class="text-danger">{{ $message }}*</div>
                             @enderror

@@ -6,7 +6,7 @@
         </option>
         @if (!empty($getCategories))
             @foreach ($getCategories as $parentCategory)
-                <option value="{{ $parentCategory['id'] }}" {{ isset($category['parent_id']) && ($category['parent_id'] == $parentCategory['id']) ? 'selected' : '' }}>
+                <option value="{{ $parentCategory['id'] }}" {{ ( isset($category['parent_id'])) && (($category['parent_id'] == $parentCategory['id'])) ? 'selected' : '' }}>
                     &nbsp;&nbsp;{{ $parentCategory['name'] }}
                     @if (!empty($parentCategory['subcategory']))
                         @foreach ($parentCategory['subcategory'] as $subCategory)
@@ -23,4 +23,3 @@
         <div class="text-danger">{{ $message }}*</div>
     @enderror
 </div>
-{{-- {{ isset($category['id']) && ($parentCategory['parent_id'] == $category['id']) ? 'selected' : '' }} --}}

@@ -15,10 +15,10 @@
             </a>
             <div class="collapse" id="ui-setting">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url ('admin/change-password') }}">Change Password</a>
                     </li>
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url ('admin/update-profile') }}">Update Profile</a>
                     </li>
                 </ul>
@@ -32,39 +32,39 @@
             </a>
             <div class="collapse" id="ui-management">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url ('admin/admin-management/Admin') }}">Admins</a>
                     </li>
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url ('admin/admin-management/Subadmin') }}">Subadmins</a>
                     </li>
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url ('admin/admin-management/Vendor') }}">Vendors</a>
                     </li>
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url ('admin/admin-management/All') }}">All</a>
                     </li>
                 </ul>
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-category" aria-expanded="false" aria-controls="ui-category">
+            <a class="nav-link" data-toggle="collapse" href="#ui-category" aria-expanded="false" aria-controls="ui-management">
                 <i class="mdi mdi-book-multiple menu-icon"></i>
                 <span class="menu-title">Catelogue Management</span>
                 <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="ui-category">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url ('admin/section') }}">Sections</a>
                     </li>
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url ('admin/brand') }}">Brands</a>
                     </li>
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url ('admin/category') }}">Categories</a>
                     </li>
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url ('admin/product') }}">Products</a>
                     </li>
                 </ul>
@@ -79,13 +79,13 @@
             </a>
             <div class="collapse" id="ui-details">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url ('admin/details/personal') }}">Personal Details</a>
                     </li>
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url ('admin/details/business') }}">Business Details</a>
                     </li>
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url ('admin/details/bank') }}">Bank Details</a>
                     </li>
                 </ul>

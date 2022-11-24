@@ -44,11 +44,11 @@
                                     <td> {{ $admin['mobile'] }} </td>
                                     <td class="status_collum">
                                         @if($admin['status'] == 1)
-                                        <a href="javascript:void(0)" class="change_status" id="admin-{{ $admin['vendor_id'] }}" status_id="{{ $admin['vendor_id'] }}" status_path="admin">
+                                        <a href="javascript:void(0)" class="change_status text-primary" id="admin-{{ $admin['vendor_id'] }}" status_id="{{ $admin['vendor_id'] }}" status_path="admin">
                                             <i class="mdi mdi-checkbox-marked-circle" status="Active"></i>
                                         </a>
                                         @else
-                                        <a href="javascript:void(0)" class="change_status" id="admin-{{ $admin['vendor_id'] }}" status_id="{{ $admin['vendor_id'] }}" status_path="admin">
+                                        <a href="javascript:void(0)" class="change_status text-primary" id="admin-{{ $admin['vendor_id'] }}" status_id="{{ $admin['vendor_id'] }}" status_path="admin">
                                             <i class="mdi mdi-checkbox-blank-circle-outline" status="Inactive"></i>
                                         </a>
                                         @endif
@@ -58,7 +58,7 @@
                                     <td>
 
                                         @if( $admin['type'] == 'Vendor')
-                                        <a href="{{ url('admin/vendor-details/'.$admin['vendor_id']) }}" class="vendor_details" target="_blank">
+                                        <a href="{{ url('admin/vendor-details/'.$admin['vendor_id']) }}" class="vendor_details text-info" target="_blank">
                                             <i class="mdi mdi-receipt"></i>
                                         </a>
                                         @endif

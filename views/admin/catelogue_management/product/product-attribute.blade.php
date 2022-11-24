@@ -9,9 +9,9 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Product Attribute</h4>
-                        @if (Session::has('success_msg'))
+                        @if (Session::has('success_msg_attr'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Success:</strong> {{ Session('success_msg') }}!
+                                <strong>Success:</strong> {{ Session('success_msg_attr') }}!
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -54,19 +54,21 @@
                                                 @else
                                                     <a href="javascript:void(0)" class="change_status text-primary"
                                                         id="productAttribute-{{ $productAttr['id'] }}"
-                                                        status_id="{{ $productAttr['id'] }}" status_path="productAttribute">
+                                                        status_id="{{ $productAttr['id'] }}"
+                                                        status_path="productAttribute">
                                                         <i class="mdi mdi-checkbox-blank-circle-outline"
                                                             status="Inactive"></i>
                                                     </a>
                                                 @endif
                                             </td>
                                             <td class="action_collum">
-                                                <a href="{{ url('admin/add-edit-category/' . $productAttr['id']) }}"
+                                                <a href="{{ url('admin/product-attr/'.$products['id'] .'/edit-product-attr/' . $productAttr['id']) }}"
                                                     class="text-info">
                                                     <i class="mdi mdi-table-edit"></i>
                                                 </a>
-                                                <a href="javascript:void(0)" class="delete_row text-danger"
-                                                    delete_id="{{ $productAttr['id'] }}" delete_path="product-attr/{{$products['id']}}/productAttribute">
+                                                <a href="javascript:void(0)" class="delete_attr_row text-danger"
+                                                    delete_id="{{ $productAttr['id'] }}"
+                                                    delete_path="{{ $products['id'] }}/delete-productAttribute">
                                                     <i class="mdi mdi-delete-forever"></i>
                                                 </a>
                                             </td>
@@ -76,15 +78,15 @@
                             </table>
                         </div>
 
-                        <form class="forms-sample  mt-5"
-                            action="{{ url('admin/add-product-attr') }}"
-                            method="post">
-                            <h4 class="card-title">Add Product Attribute</h4> <hr>
+                        <form class="forms-sample  mt-5" action="{{ url('admin/add-product-attr') }}" method="post">
+                            <h4 class="card-title">Add Product Attribute</h4>
+                            <hr>
                             @csrf
                             <input class="form-control" name="product_id" value="{{ $products['id'] }}" type="hidden">
                             <div class="form-group">
                                 <label for="name">Product Name:</label>
-                                <input class="form-control" id="name" value="{{ $products['product_name'] }}" readonly>
+                                <input class="form-control" id="name" value="{{ $products['product_name'] }}"
+                                    readonly>
                             </div>
                             <div class="form-group">
                                 <label for="name">Product Category:</label>
@@ -96,12 +98,25 @@
                                 <input class="form-control" id="name" value="{{ $products['brand']['name'] }}"
                                     readonly>
                             </div>
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <div class="field_wrapper">
                                 <div>
-                                    <input style="width: 20%" type="text" name="sku[]" value="" placeholder="Sku" class="form-control"/>
-                                    <input style="width: 20%" type="text" name="size[]" value="" placeholder="Size" class="form-control"/>
-                                    <input style="width: 20%" type="text" name="price[]" value="" placeholder="Price" class="form-control"/>
-                                    <input style="width: 20%" type="text" name="stock[]" value="" placeholder="Stock" class="form-control"/>
+                                    <input style="width: 20%" type="text" name="sku[]" placeholder="Sku"
+                                        class="form-control" />
+                                    <input style="width: 20%" type="text" name="size[]" placeholder="Size"
+                                        class="form-control" />
+                                    <input style="width: 20%" type="text" name="price[]" placeholder="Price"
+                                        class="form-control" />
+                                    <input style="width: 20%" type="text" name="stock[]" placeholder="Stock"
+                                        class="form-control" />
                                     <a href="javascript:void(0);" class="add_button" title="Add field">Add More</a>
                                 </div>
                             </div>

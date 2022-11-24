@@ -8,7 +8,12 @@
             <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                     <h3 class="font-weight-bold">Welcome Aamir</h3>
-                    <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span class="text-primary">3 unread alerts!</span></h6>
+                    <h1 id="red">hridoy</h1>
+                    {{-- <font color="red"> hridoy </font> --}}
+                    <p>
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit, dolores.
+                    </p>
+                    {{-- <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span class="text-primary">3 unread alerts!</span></h6> --}}
                 </div>
                 <div class="col-12 col-xl-4">
                     <div class="justify-content-end d-flex">
@@ -134,7 +139,7 @@
     </div>
 
 
-    
+
     <!-- <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card position-relative">

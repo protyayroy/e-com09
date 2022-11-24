@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">{{ $title }}</h4>
-                    <a href="{{ url('admin/section') }}" class="btn btn-success float-right">Back</a>
+                    <a href="{{ url('admin/section') }}" class="btn btn-warning float-right">Back</a>
                     <div class="clr"></div>
 
                     <form class="forms-sample" action="{{ isset($section['id']) && !empty($section['id']) ? url('admin/add-edit-section/'.$section['id']) : url('admin/add-edit-section') }}" method="post">

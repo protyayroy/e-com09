@@ -24,8 +24,8 @@
                             <thead>
                                 <tr>
                                     <th> #Id </th>
-                                    <th> Name: </th>
-                                    <th> parent id: </th>
+                                    <th>Category Name: </th>
+                                    <th> Category Type: </th>
                                     <th> Section: </th>
                                     <th> Discount: </th>
                                     <th> Image: </th>
@@ -42,32 +42,39 @@
                                         @if($category['parent_id'] == 0)
                                         Root
                                         @else
-                                        $category['parent_id']
+                                        {{$category['parentcategory']['name']}}
                                         @endif
+                                        {{-- {{ }} --}}
                                     </td>
                                     <td> {{ $category['section']['name'] }} </td>
-                                    <td> {{ $category['discount'] }} </td>
+                                    <td> {{ $category['discount'] }}% </td>
                                     <td>
-                                        <a href="">
-                                            <img src="{{ url('images/category_img/'.$category['image']) }}" alt="{{ $category['image'] }}">
+                                        @if (isset($category['image']) && !empty($category['image']))
+                                        <a href="{{ url('images/category_image/'.$category['image']) }}" target="_blannk">
+                                            <img src="{{ url('images/category_image/'.$category['image']) }}" alt="{{ $category['image'] }}">
                                         </a>
+                                        @else
+                                        <a href="{{ url('images/dummy_img/no_img.png') }}" target="_blannk">
+                                            <img src="{{ url('images/dummy_img/no_img.png') }}" alt="No Image">
+                                        </a>
+                                        @endif
                                     </td>
                                     <td class="status_collum">
                                         @if($category['status'] == 1)
-                                        <a href="javascript:void(0)" class="change_status" id="category-{{ $category['id'] }}" status_id="{{ $category['id'] }}" status_path="category">
+                                        <a href="javascript:void(0)" class="change_status text-primary" id="category-{{ $category['id'] }}" status_id="{{ $category['id'] }}" status_path="category">
                                             <i class="mdi mdi-checkbox-marked-circle" status="Active"></i>
                                         </a>
                                         @else
-                                        <a href="javascript:void(0)" class="change_status" id="category-{{ $category['id'] }}" status_id="{{ $category['id'] }}" status_path="category">
+                                        <a href="javascript:void(0)" class="change_status text-primary" id="category-{{ $category['id'] }}" status_id="{{ $category['id'] }}" status_path="category">
                                             <i class="mdi mdi-checkbox-blank-circle-outline" status="Inactive"></i>
                                         </a>
                                         @endif
                                     </td>
                                     <td class="action_collum">
-                                        <a href="{{ url('admin/add-edit-category/'.$category['id']) }}">
+                                        <a href="{{ url('admin/add-edit-category/'.$category['id']) }}" class="text-info">
                                             <i class="mdi mdi-table-edit"></i>
                                         </a>
-                                        <a href="javascript:void(0)" class="delete_row" delete_id="{{ $category['id'] }}" delete_path="category">
+                                        <a href="javascript:void(0)" class="delete_row text-danger" delete_id="{{ $category['id'] }}" delete_path="category">
                                             <i class="mdi mdi-delete-forever"></i>
                                         </a>
                                     </td>

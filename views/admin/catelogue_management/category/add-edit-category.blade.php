@@ -9,15 +9,15 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">{{ $title }}</h4>
-                        <a href="{{ url('admin/category') }}" class="btn btn-success float-right">Back</a>
+                        <a href="{{ url('admin/category') }}" class="btn btn-warning float-right">Back</a>
                         <div class="clr"></div>
 
                         <form class="forms-sample"
                             action="{{ isset($category['id']) && !empty($category['id']) ? url('admin/add-edit-category/' . $category['id']) : url('admin/add-edit-category') }}"
-                            method="post">
+                            method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="name">Category Name:</label>
                                         <input type="text" class="form-control" id="name" name="name"
@@ -64,7 +64,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="url">Category Url:</label>
                                         <input type="text" class="form-control" id="url" name="url"
@@ -105,8 +105,18 @@
                                             <div class="text-danger">{{ $message }}*</div>
                                         @enderror
                                     </div>
+                                    @if (isset($category['image']) && !empty($category['image']))
+                                        <div>
+                                            <a href="{{ url('images/category_image/'.$category['image']) }}" target="_blannk" class="btn btn-dark">
+                                                View Image
+                                            </a>
+                                            <a href="{{ url('images/category_image/'.$category['image']) }}" target="_blank" class="btn btn-danger ml-4">
+                                                Delete Image
+                                            </a>
+                                        </div>
+                                    @endif
                                 </div>
-                                <div class="col-md-12 mt-2">
+                                <div class="col-lg-12 mt-4">
                                     <button type="submit" class="btn btn-primary w-100">
                                         @if ($title == 'Add Category')
                                             Add Category
