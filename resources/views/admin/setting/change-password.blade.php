@@ -36,7 +36,7 @@
                         <div class="form-group">
                             <label for="current_password">Current Password:</label>
                             <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter Current Password">
-                            <span class="err_password"></span>
+                            <div id="check_password" class="mt-2"></div>
                             @error('current_password')
                             <div class="text-danger">{{ $message }}*</div>
                             @enderror

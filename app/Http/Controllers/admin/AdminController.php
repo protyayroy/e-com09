@@ -18,20 +18,9 @@ class AdminController extends Controller
     public function viewVendorDetails($id){
         $personal = Vendor::with('bank', 'business')->where('id', $id)->first()->toArray();
         $vendor = Admin::where('vendor_id', $id)->first()->toArray();
-        // $business = Vendor_business_detail::where('vendor_id', $id)->first()->toArray();
-        // $bank = Vendor_bank_detail::where('vendor_id', $id)->first()->toArray();
-        // dd($personal);
-        // echo "<pre>"; print_r($personal);
-        // // echo "<pre>"; print_r($business);
-        // // echo "<pre>"; print_r($bank);
-        // die;
+
         return view('admin.admin_management.vendorDetails', compact('personal', 'vendor'));
-        // ->with([
-        //     'vendor' => Admin::where('vendor_id', $id)->get()->toArray(),
-        //     'personal' => Vendor::where('id', $id)->get()->toArray(),
-        //     'business' => Vendor_business_detail::where('vendor_id', $id)->get()->toArray(),
-        //     'bank' => Vendor_bank_detail::where('vendor_id', $id)->get()->toArray()
-        // ])
+
     }
 
     //  ADMIN MANAGEMENT
@@ -308,7 +297,9 @@ class AdminController extends Controller
     {
         $data = $request->all();
         // echo "<pre>"; print_r($data); die;
-        if (Hash::check($data['password'], Auth::guard('admin')->user()->password)) {
+        if($data['password'] == ""){
+            return "";
+        }else if (Hash::check($data['password'], Auth::guard('admin')->user()->password)) {
             return 'true';
         } else {
             return 'false';

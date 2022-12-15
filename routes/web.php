@@ -28,27 +28,64 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 
-Route::prefix('/admin')->namespace('App\Http\Controllers\admin')->group(function(){
+Route::prefix('/admin')->namespace('App\Http\Controllers\admin')->group(function () {
 
     // LOGIN PAGE
-    Route::match(['post','get'], 'login', 'AdminController@login');
+    Route::match(['post', 'get'], 'login', 'AdminController@login');
 
     // ADMIN MIDDLEWARE START
-    Route::group(['middleware' => ['admin']],function(){
+    Route::group(['middleware' => ['admin']], function () {
+
+        // ADMIN LOGOUT
+        Route::get('logout', 'AdminController@logout');
 
         // VIEW DASHBOARD
         Route::get('dashboard', 'AdminController@dashboard');
 
         // CHANGE PASSWORD
-        Route::match(['post','get'], 'change-password', 'AdminController@changeAdminPassword');
+        Route::match(['post', 'get'], 'change-password', 'AdminController@changeAdminPassword');
+
+        // REAL TIME CHECK ADMIN PASSWORD
+        Route::post('check-password', 'AdminController@checkAdminPassword');
 
         // UPDATE ADMIN PROFILE
-        Route::match(['post','get'], 'update-profile', 'AdminController@updateAdminProfile');
+        Route::match(['post', 'get'], 'update-profile', 'AdminController@updateAdminProfile');
 
-        // VIEW DASHBOARD
+        // VIEW ADMIN DETAILS
         Route::get('admin-management/{type}', 'AdminController@adminManagement');
+
+        // VIEW VENDOR DETAILS
+        Route::get('vendor-details/{id}', 'AdminController@viewVendorDetails');
+
+        // CHANGE ADMIN STATUS
+        Route::post('admin-management/admin-status', 'AdminController@updateAdminStatus');
+
+        // VIEW SECTION
+        Route::get('section', 'SectionController@section');
+
+        // CHANGE SECTION STATUS
+        Route::post('section-status', 'SectionController@updateSectionStatus');
+
+        // ADD-EDIT SECTION
+        Route::match(['post', 'get'], 'add-edit-section/{id?}', 'SectionController@sectionAddEdit');
+
+        // DELETE BRAND
+        Route::get('delete-section/{id}', 'SectionController@destroy');
+
+        // VIEW BRAND
+        Route::get('brand', 'BrandController@brand');
+
+        // CHANGE BRAND STATUS
+        Route::post('brand-status', 'BrandController@updateBrandStatus');
+
+        // ADD-EDIT BRAND
+        Route::match(['post', 'get'], 'add-edit-brand/{id?}', 'BrandController@brandAddEdit');
+
+        // DELETE BRAND
+        Route::get('delete-brand/{id}', 'BrandController@destroy');
+
     });
 });

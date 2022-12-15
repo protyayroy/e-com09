@@ -65,6 +65,7 @@ class SectionController extends Controller
     //  DELETE SECTION
     public function destroy($id)
     {
+        // echo("hii") ; die;
         Section::find($id)->delete();
         return back()->with('success_msg', 'The Section has been deleted successfully');
 
