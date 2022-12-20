@@ -72,7 +72,7 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\admin')->group(function
         // ADD-EDIT SECTION
         Route::match(['post', 'get'], 'add-edit-section/{id?}', 'SectionController@sectionAddEdit');
 
-        // DELETE BRAND
+        // DELETE SECTION
         Route::get('delete-section/{id}', 'SectionController@destroy');
 
         // VIEW BRAND
@@ -87,5 +87,34 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\admin')->group(function
         // DELETE BRAND
         Route::get('delete-brand/{id}', 'BrandController@destroy');
 
+        // VIEW CATEGORY
+        Route::get('category', 'CategoryController@category');
+
+        // CHANGE CATEGORY STATUS
+        Route::post('category-status', 'CategoryController@updateCategoryStatus');
+
+        // ADD-EDIT CATEGORY
+        Route::match(['post', 'get'], 'add-edit-category/{id?}', 'CategoryController@categoryAddEdit');
+
+        // DELETE CATEGORY
+        Route::get('delete-category/{id}', 'CategoryController@destroy');
+
+        // CHANGE CATEGORY TYPE
+        Route::get('change-category/{id}', 'CategoryController@changeCategoryType');
+
+        // VIEW PRODUCT
+        Route::get('product', 'ProductController@product');
+
+        // CHANGE PRODUCT STATUS
+        Route::post('product-status', 'ProductController@updateProductStatus');
+
+        // ADD-EDIT PRODUCT
+        Route::match(['post', 'get'], 'add-edit-product/{id?}', 'ProductController@productAddEdit');
+
+        // DELETE PRODUCT
+        Route::get('delete-category/{id}', 'ProductController@destroy');
+
+        // CHANGE CATEGORY TYPE
+        // Route::get('change-category/{id}', 'CategoryController@changeCategoryType');
     });
 });

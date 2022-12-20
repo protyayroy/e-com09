@@ -47,7 +47,7 @@ class BrandController extends Controller
         }
         if ($request->isMethod('post')) {
             $request->validate([
-                'name' => 'required|regex:/^[a-zA-Z0-9\p{Arabic}_]+$/u'
+                'name' => 'required'
             ]);
             $brand->name = $request->name;
             $brand->status = 1;
