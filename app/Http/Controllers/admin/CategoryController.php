@@ -81,7 +81,7 @@ class CategoryController extends Controller
             $category->name = $request->name;
             $category->discount = $request->discount;
             $category->description = $request->description;
-            $category->url = $request->url;
+            $category->url = $request->url."-".Str::random(10);
             $category->meta_title = $request->meta_title;
             $category->meta_description = $request->meta_description;
             $category->meta_keywords = $request->meta_keywords;

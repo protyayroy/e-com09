@@ -2,10 +2,10 @@
 
 @section('title', '| Product Management')
 
-@section('active_class')
-active
-$active = 'active';
-@endsection
+{{-- @section('active_class')
+    active
+    $active = 'active';
+@endsection --}}
 
 @section('content')
     <div class="content-wrapper">
@@ -31,40 +31,55 @@ $active = 'active';
                                             <div class="text-danger">{{ $message }}*</div>
                                         @enderror
                                     </div>
+                                    <style>
+                                        .sectionType {
+                                            font-weight: 800;
+                                            color: rgb(15, 16, 15)
+                                        }
+                                        .categoryType{
+                                            font-weight: 600;
+                                            color: rgb(56, 85, 61)
+                                        }
+                                    </style>
                                     <div class="form-group">
                                         <label for="section_id">Product Category:</label>
-                                            <select name="section_id" id="section_id" class="form-control">
-                                                <option disabled selected> Select Product Category</option>
-                                                @foreach ( $getSection as $sectionType)
-                                                <option value="{{ $sectionType['id'] }}" {{ (isset($products['category_id'])) && ($products['category_id'] == $sectionType['id']) ? 'selected' : '' }}>
+                                        <select name="section_id" id="section_id" class="form-control">
+                                            <option disabled selected> Select Product Category</option>
+                                            @foreach ($getSection as $sectionType)
+                                                <option value="{{ $sectionType['id'] }}"
+                                                    {{ isset($products['category_id']) && $products['category_id'] == $sectionType['id'] ? 'selected' : '' }}
+                                                    class="sectionType" disabled>
                                                     {{ $sectionType['name'] }}
-                                                    @foreach ( $sectionType['sectioncategory'] as $categoryType)
-                                                        <option value="{{$categoryType['id']}}" {{ (isset($products['category_id'])) && ($products['category_id'] == $categoryType['id']) ? 'selected' : '' }}>
-                                                            &nbsp;&nbsp;&raquo; {{$categoryType['name']}}
-                                                            @foreach ( $categoryType['subcategory'] as $subCategoryType)
-                                                                <option value="{{ $subCategoryType['id'] }}" {{ (isset($products['category_id'])) && ($products['category_id'] == $subCategoryType['id']) ? 'selected' : '' }}>
-                                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&raquo; {{ $subCategoryType['name'] }}
-                                                                </option>
-                                                            @endforeach
-                                                        </option>
-                                                    @endforeach
+                                                    @foreach ($sectionType['sectioncategory'] as $categoryType)
+                                                <option value="{{ $categoryType['id'] }}"
+                                                    {{ isset($products['category_id']) && $products['category_id'] == $categoryType['id'] ? 'selected' : '' }} class="categoryType">
+                                                    &nbsp;&nbsp;&raquo; {{ $categoryType['name'] }}
+                                                    @foreach ($categoryType['subcategory'] as $subCategoryType)
+                                                <option value="{{ $subCategoryType['id'] }}"
+                                                    {{ isset($products['category_id']) && $products['category_id'] == $subCategoryType['id'] ? 'selected' : '' }}>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&raquo; {{ $subCategoryType['name'] }}
                                                 </option>
-                                                @endforeach
-                                            </select>
+                                            @endforeach
+                                            </option>
+                                            @endforeach
+                                            </option>
+                                            @endforeach
+                                        </select>
                                         @error('section_id')
                                             <div class="text-danger">{{ $message }}*</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="brand_id">Product Brand:</label>
-                                            <select name="brand_id" id="brand_id" class="form-control">
-                                                <option disabled selected> Select Product Brand</option>
-                                                @foreach ( $getBrand as $brand)
-                                                    <option value="{{ $brand['id'] }}" {{ isset($products['brand_id']) && ($products['brand_id'] == $brand['id']) ? 'selected' : '' }}>
-                                                        {{ $brand['name'] }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+                                        <select name="brand_id" id="brand_id" class="form-control">
+                                            <option disabled selected> Select Product Brand</option>
+                                            @foreach ($getBrand as $brand)
+                                                <option value="{{ $brand['id'] }}"
+                                                    {{ isset($products['brand_id']) && $products['brand_id'] == $brand['id'] ? 'selected' : '' }}>
+                                                    {{ $brand['name'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                         @error('brand_id')
                                             <div class="text-danger">{{ $message }}*</div>
                                         @enderror

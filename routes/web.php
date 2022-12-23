@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('customer.layouts.layout');
+// });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -30,6 +31,11 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
+// <---------------------------------------------------------> //
+
+//                  ALL ADMIN CONTROLLER                       //
+
+// <---------------------------------------------------------> //
 
 Route::prefix('/admin')->namespace('App\Http\Controllers\admin')->group(function () {
 
@@ -118,3 +124,30 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\admin')->group(function
         // Route::get('change-category/{id}', 'CategoryController@changeCategoryType');
     });
 });
+
+
+// <---------------------------------------------------------> //
+
+//                  ALL CUSTOMER CONTROLLER                    //
+
+// <---------------------------------------------------------> //
+
+Route::namespace("App\Http\Controllers\customer")->group(function(){
+
+    // STARTNG PAGE
+    Route::get("/", "IndexController@index");
+
+    $catUrls = Category::select('url')->where('status',1)->get()->pluck('url');
+    foreach($catUrls as $key=>$url){
+    //     echo '<pre>';
+    // print_r($key);
+    // die();
+    // dd( $url);
+    Route::get("/".$url, "IndexController@listing");
+    };
+
+
+});
+
+
+
