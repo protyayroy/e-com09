@@ -1,46 +1,42 @@
+@php
+    use App\Models\Products_filter;
+
+    $productFilters = Products_filter::productFilters();
+@endphp
+
 <div class="col-lg-3 col-md-3 col-sm-12">
-    <!-- Fetch-Categories-from-Root-Category  -->
+
     <div class="fetch-categories">
-        <h3 class="title-name">Browse Categories</h3>
-        <!-- Level 1 -->
-        <h3 class="fetch-mark-category">
-            <a href="listing.html">T-Shirts
-                <span class="total-fetch-items">(5)</span>
-            </a>
-        </h3>
-        <ul>
-            <li>
-                <a href="shop-v3-sub-sub-category.html">Casual T-Shirts
-                    <span class="total-fetch-items">(3)</span>
-                </a>
-            </li>
-            <li>
-                <a href="listing.html">Formal T-Shirts
-                    <span class="total-fetch-items">(2)</span>
-                </a>
-            </li>
-        </ul>
-        <!-- //end Level 1 -->
-        <!-- Level 2 -->
-        <h3 class="fetch-mark-category">
-            <a href="listing.html">Shirts
-                <span class="total-fetch-items">(5)</span>
-            </a>
-        </h3>
-        <ul>
-            <li>
-                <a href="shop-v3-sub-sub-category.html">Casual Shirts
-                    <span class="total-fetch-items">(3)</span>
-                </a>
-            </li>
-            <li>
-                <a href="listing.html">Formal Shirts
-                    <span class="total-fetch-items">(2)</span>
-                </a>
-            </li>
-        </ul>
-        <!-- //end Level 2 -->
+        <h3 class="title-name" style="font-size: 15px;color: #333">Browse Categories</h3>
+
+        @foreach ($productFilters as $filter)
+            @php
+                // echo "<pre>";
+                // var_dump($categoryDetails['categoryDetails']['id']);
+                $filterAvailable = Products_filter::filterAvailable($filter['id'], $categoryDetails['categoryDetails']['id']);
+                // print_r($filterAvailable) ;
+            @endphp
+            @if ($filterAvailable == 'Yes')
+                @if (count($filter['getFilterValue']) > 0)
+                    <div class="facet-filter-associates">
+                        <h3 class="title-name" style="color: #444">{{ $filter['filter_name'] }}</h3>
+
+                        <form class="facet-form" action="#" method="post">
+                            <div class="associate-wrapper">
+                                @foreach ($filter['getFilterValue'] as $filterValue)
+                                    <input type="checkbox" class="check-box" id="cbs-21">
+                                    <label class="label-text" for="cbs-21">{{ $filterValue['filter_value'] }}
+                                        <span class="total-fetch-items">(0)</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </form>
+                    </div>
+                @endif
+            @endif
+        @endforeach
     </div>
+
     <!-- Fetch-Categories-from-Root-Category  /- -->
     <!-- Filters -->
     <!-- Filter-Size -->

@@ -7,10 +7,12 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Section;
+use App\Models\Products_filter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 
 use Intervention\Image\Exception\NotSupportedException;
@@ -58,7 +60,6 @@ class ProductController extends Controller
             $products = new Product;
             $message = "Product has been inserted successfully";
             $image = "";
-
         } else {
             $title = 'Edit Product';
             $products = Product::with('section', 'brand', 'category')->find($id);
@@ -66,14 +67,15 @@ class ProductController extends Controller
             $image = $products->product_image;
         }
 
-        if($request->isMethod('post')){
+        if ($request->isMethod('post')) {
+            // dd($request->all());
 
-            if($request->hasFile('product_image')){
+            if ($request->hasFile('product_image')) {
                 $image_tmp = $request->file('product_image');
-                if($image_tmp->isValid()){
+                if ($image_tmp->isValid()) {
                     // DELETE PREVIOUS IMAGE
-                    $previous_image_path = 'images/product_image/'.$products->product_image;
-                    if(File::exists($previous_image_path)){
+                    $previous_image_path = 'images/product_image/' . $products->product_image;
+                    if (File::exists($previous_image_path)) {
                         File::delete($previous_image_path);
                     }
                     // GET FULL IMAGE NAME WITH EXTENTION
@@ -89,17 +91,29 @@ class ProductController extends Controller
                     $unique = Str::random(10);
 
                     // SET UNIQUE IMAGE NAME
-                    $image_name = $image_first_name.$unique.'.'.$extention;
+                    $image_name = $image_first_name . $unique . '.' . $extention;
 
                     // SET IMAGE PATH
-                    $image_path = 'images/product_image/'.$image_name;
+                    $image_path = 'images/product_image/' . $image_name;
                     Image::make($image_tmp)->resize(100, 100)->save($image_path);
                 }
-            }
-            else{
+            } else {
                 $image_name = $image;
             }
             // dd($image);
+
+            $productFilters = Products_filter::productFilters();
+            foreach ($productFilters as $filter) {
+                // echo $request->{$filter['filter_column']};
+                $filterAvailable = Products_filter::filterAvailable($filter['id'], $request->section_id);
+                if ($filterAvailable == 'Yes') {
+                    if (isset($request->{$filter['filter_column']})) {
+                        echo "ok";
+                        $products->{$filter['filter_column']} = $request->{$filter['filter_column']};
+                    }
+                }
+            }
+            // die;
             $getSectionId = Category::find($request->section_id);
             $section_id = $getSectionId->section_id;
             // echo $section_id . '---'; echo $request->section_id; die; rand(1, 9999).'.'.
@@ -130,9 +144,20 @@ class ProductController extends Controller
 
         $getSection = Section::with('sectioncategory')->get()->toArray();
         $getBrand = Brand::where('status', 1)->get()->toArray();
-        // dd($getSection);
+        $filterCategories = Category::where('status', 1)->get()->toArray();
 
-        return view('admin.catelogue_management.product.add-edit-product', compact('title','products', 'getSection', 'getBrand'));
+        return view('admin.catelogue_management.product.add-edit-product', compact('title', 'products', 'getSection', 'getBrand', 'filterCategories'));
+    }
+
+    public function filter(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = $request->all();
+            $category_id = $data['category_id'];
+            return response()->json([
+                'view' => (string)View::make("admin.catelogue_management.product.select_filter")->with(compact('category_id'))
+            ]);
+        }
     }
 
     //  DELETE PRODUCT

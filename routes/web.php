@@ -122,6 +122,32 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\admin')->group(function
 
         // CHANGE CATEGORY TYPE
         // Route::get('change-category/{id}', 'CategoryController@changeCategoryType');
+
+        // VIEW FILTER
+        Route::get('filter', 'ProductsFilterController@filter');
+
+        // CHANGE FILTER STATUS
+        Route::post('filter-status', 'ProductsFilterController@updateFilterStatus');
+
+        // ADD-EDIT FILTER
+        Route::match(['post', 'get'], 'add-edit-filter/{id?}', 'ProductsFilterController@filterAddEdit');
+
+        // DELETE FILTER
+        Route::get('delete-filter/{id}', 'ProductsFilterController@destroy');
+
+        // VIEW FILTER VALUES
+        Route::get('filter-value', 'ProductsFiltersValueController@filterValue');
+
+        // CHANGE FILTER VALUES STATUS
+        Route::post('filter-value-status', 'ProductsFiltersValueController@updateFilterValueStatus');
+
+        // ADD-EDIT FILTER VALUES
+        Route::match(['post', 'get'], 'add-edit-filter-value/{id?}', 'ProductsFiltersValueController@filterValueAddEdit');
+
+        // DELETE FILTER VALUES
+        Route::get('delete-filter-value/{id}', 'ProductsFiltersValueController@destroy');
+
+        Route::get('change_filter', 'ProductController@filter');
     });
 });
 
@@ -143,9 +169,8 @@ Route::namespace("App\Http\Controllers\customer")->group(function(){
     // print_r($key);
     // die();
     // dd( $url);
-    Route::get("/".$url, "IndexController@listing");
+    Route::match(['get','post'], "/".$url, "IndexController@listing");
     };
-
 
 });
 

@@ -1,3 +1,10 @@
+@php
+    use App\Models\Products_filter;
+
+    $productFilters = Products_filter::productFilters();
+    // var_dump($proFilterCatIds)  ;
+@endphp
+
 @extends('admin.layouts.layout')
 
 @section('title', '| Product Management')
@@ -36,7 +43,8 @@
                                             font-weight: 800;
                                             color: rgb(15, 16, 15)
                                         }
-                                        .categoryType{
+
+                                        .categoryType {
                                             font-weight: 600;
                                             color: rgb(56, 85, 61)
                                         }
@@ -52,7 +60,8 @@
                                                     {{ $sectionType['name'] }}
                                                     @foreach ($sectionType['sectioncategory'] as $categoryType)
                                                 <option value="{{ $categoryType['id'] }}"
-                                                    {{ isset($products['category_id']) && $products['category_id'] == $categoryType['id'] ? 'selected' : '' }} class="categoryType">
+                                                    {{ isset($products['category_id']) && $products['category_id'] == $categoryType['id'] ? 'selected' : '' }}
+                                                    class="categoryType">
                                                     &nbsp;&nbsp;&raquo; {{ $categoryType['name'] }}
                                                     @foreach ($categoryType['subcategory'] as $subCategoryType)
                                                 <option value="{{ $subCategoryType['id'] }}"
@@ -68,6 +77,9 @@
                                         @error('section_id')
                                             <div class="text-danger">{{ $message }}*</div>
                                         @enderror
+                                    </div>
+                                    <div id="select_filter">
+                                        @include("admin.catelogue_management.product.select_filter")
                                     </div>
                                     <div class="form-group">
                                         <label for="brand_id">Product Brand:</label>

@@ -67,6 +67,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url ('admin/product') }}">Products</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url ('admin/filter') }}">Filters</a>
+                    </li>
                 </ul>
             </div>
         </li>

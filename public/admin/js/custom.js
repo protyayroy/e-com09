@@ -122,3 +122,21 @@ $("#section_id").change(function(){
         }
     })
 })
+
+$("#section_id").change(function(){
+    var category_id = $(this).val();
+    // alert(section_id);
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        url : 'change_filter',
+        type : 'get',
+        data : {
+            category_id:category_id
+        },
+        success : function(data){
+            $("#select_filter").html(data.view);
+        }
+    })
+})

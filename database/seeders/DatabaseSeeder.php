@@ -22,6 +22,14 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
+
+        // <<<<<<<<<<<<<<<<---------------------------------------->>>>>>>> //
+        //                                                                  //
+        //                  ALL SEEDER FILE START                           //
+        //                                                                  //
+        // <<<<<<<<<<<<<<<<---------------------------------------->>>>>>>> //
+        
+
             // $this->call([AdminTableSeeder::class]);
             // $this->call([VendorTableSeeder::class]);
             // $this->call([Vendor_bank_detailTableSeeder::class]);
@@ -29,6 +37,8 @@ class DatabaseSeeder extends Seeder
             // $this->call([SectionSeeder::class]);
             // $this->call([BrandSeeder::class]);
             // $this->call([CategorySeeder::class]);
+            // $this->call([ProductsFilterSeeder::class]);
+            // $this->call([ProductsFiltersValueSeeder::class]);
 
     }
 }

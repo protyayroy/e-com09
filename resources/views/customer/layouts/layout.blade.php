@@ -10,6 +10,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Laravel Multi Vendor E-commerce Template - By Stack Developers Youtube Channel</title>
+
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- Standard Favicon -->
     <link href="favicon.ico" rel="shortcut icon">
     <!-- Base Google Font for Web-app -->
