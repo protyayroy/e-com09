@@ -20,4 +20,5 @@ class Product extends Model
     public function brand(){
         return $this->belongsTo('App\Models\Brand')->select('id', 'name')->where('status', 1);
     }
+
 }

@@ -54,13 +54,11 @@
                                         <select name="section_id" id="section_id" class="form-control">
                                             <option disabled selected> Select Product Category</option>
                                             @foreach ($getSection as $sectionType)
-                                                <option value="{{ $sectionType['id'] }}"
-                                                    {{ isset($products['category_id']) && $products['category_id'] == $sectionType['id'] ? 'selected' : '' }}
-                                                    class="sectionType" disabled>
+                                                <option value="{{ $sectionType['id'] }}" class="sectionType" disabled>
                                                     {{ $sectionType['name'] }}
                                                     @foreach ($sectionType['sectioncategory'] as $categoryType)
                                                 <option value="{{ $categoryType['id'] }}"
-                                                    {{ isset($products['category_id']) && $products['category_id'] == $categoryType['id'] ? 'selected' : '' }}
+                                                    {{ isset($products['category_id']) && ($products['category_id'] == $categoryType['id']) ? 'selected' : '' }}
                                                     class="categoryType">
                                                     &nbsp;&nbsp;&raquo; {{ $categoryType['name'] }}
                                                     @foreach ($categoryType['subcategory'] as $subCategoryType)

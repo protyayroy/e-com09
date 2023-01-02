@@ -61,8 +61,8 @@
                                     <label class="sr-only" for="sort">Sort By</label>
                                     <select class="select-box" id="sort" name="sort">
                                         {{-- <option selected="selected" value="">Sort By: Best Selling</option> --}}
-                                        <option selected="selected" value="" disabled>Select Your Filter</option>
-                                        <option value="letest">Sort By: Latest Product</option>
+                                        {{-- <option selected="selected" value="" disabled>Select Your Filter</option> --}}
+                                        <option value="letest" selected>Sort By: Latest Product</option>
                                         <option value="lowest_price">Sort By: Lowest Price</option>
                                         <option value="highest_price">Sort By: Highest Price</option>
                                         <option value="a-z">Sort By: Product Name A-Z</option>
@@ -92,7 +92,7 @@
                     <div class="row product-container grid-style">
                         {{-- {{$products->count() }} --}}
 
-                        @include("customer.listing-product.product")
+                        @include('customer.listing-product.product')
                     </div>
                     <div>
                         {{ $categoryDetails['categoryDetails']['description'] }}
@@ -138,3 +138,5 @@
         </div>
     </div>
 @endsection
+
+

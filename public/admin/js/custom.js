@@ -109,19 +109,19 @@ $(document).on("click", ".delete_row", function () {
 })
 
 // CHANGE CATEGORY DYNAMICLY
-$("#section_id").change(function(){
-    var section_id = $(this).val();
-    // alert(section_id);
-    $.ajax({
-        url: "change-category/"+section_id,
-        type: "get",
-        success: function(data){
-            $("#appedCategoryLabel").html(data);
-        },error: function(){
-            alert("Error")
-        }
-    })
-})
+// $("#section_id").change(function(){
+//     var section_id = $(this).val();
+//     alert(section_id);
+//     $.ajax({
+//         url: "change-category/"+section_id,
+//         type: "get",
+//         success: function(data){
+//             $("#appedCategoryLabel").html(data);
+//         },error: function(){
+//             alert("Error")
+//         }
+//     })
+// })
 
 $("#section_id").change(function(){
     var category_id = $(this).val();

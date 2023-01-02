@@ -2,6 +2,7 @@
     use App\Models\Products_filter;
 
     $productFilters = Products_filter::productFilters();
+
 @endphp
 
 <div class="col-lg-3 col-md-3 col-sm-12">
@@ -24,8 +25,11 @@
                         <form class="facet-form" action="#" method="post">
                             <div class="associate-wrapper">
                                 @foreach ($filter['getFilterValue'] as $filterValue)
-                                    <input type="checkbox" class="check-box" id="cbs-21">
-                                    <label class="label-text" for="cbs-21">{{ $filterValue['filter_value'] }}
+                                    <input type="checkbox" class="check-box {{ $filter['filter_column'] }}"
+                                        value="{{ $filterValue['filter_value'] }}"
+                                        name="{{ $filter['filter_column'] }}[]" id="{{ $filterValue['filter_value'] }}">
+                                    <label class="label-text"
+                                        for="{{ $filterValue['filter_value'] }}">{{ $filterValue['filter_value'] }}
                                         <span class="total-fetch-items">(0)</span>
                                     </label>
                                 @endforeach
@@ -113,26 +117,14 @@
         <h3 class="title-name">Color</h3>
         <form class="facet-form" action="#" method="post">
             <div class="associate-wrapper">
+                @foreach ($productColors as $color)
+
                 <input type="checkbox" class="check-box" id="cbs-16">
-                <label class="label-text" for="cbs-16">Heather Grey
+                <label class="label-text" for="cbs-16">{{ $color['product_color'] }}
                     <span class="total-fetch-items">(1)</span>
                 </label>
-                <input type="checkbox" class="check-box" id="cbs-17">
-                <label class="label-text" for="cbs-17">Black
-                    <span class="total-fetch-items">(1)</span>
-                </label>
-                <input type="checkbox" class="check-box" id="cbs-18">
-                <label class="label-text" for="cbs-18">White
-                    <span class="total-fetch-items">(3)</span>
-                </label>
-                <input type="checkbox" class="check-box" id="cbs-19">
-                <label class="label-text" for="cbs-19">Mischka Plain
-                    <span class="total-fetch-items">(1)</span>
-                </label>
-                <input type="checkbox" class="check-box" id="cbs-20">
-                <label class="label-text" for="cbs-20">Black Bean
-                    <span class="total-fetch-items">(1)</span>
-                </label>
+
+                @endforeach
             </div>
         </form>
     </div>
@@ -251,3 +243,7 @@
     <!-- Filter-Rating -->
     <!-- Filters /- -->
 </div>
+
+{{-- @section('jquery')
+
+@endsection --}}
