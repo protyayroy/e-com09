@@ -28,63 +28,61 @@ class IndexController extends Controller
         // print_r($categoryDetails) ;
         // die();
 
-        $products = Product::whereIn("category_id" , $categoryDetails['catIds']);
+        $products = Product::whereIn("category_id", $categoryDetails['catIds']);
         // ->orderBy("product_price", "DESC")->get()->toArray();
 
         // echo "<pre>";
         // print_r($products) ;
         // die();
 
-        $productColors = Product::select('product_color')->whereIn("category_id" , $categoryDetails['catIds'])->distinct()->get();
+        $productColors = Product::select('product_color')->whereIn("category_id", $categoryDetails['catIds'])->distinct()->get();
 
-        // dd($products);
-        if($request->ajax()){
+        $productBrands = Product::with('brand')->select('brand_id')->whereIn("category_id", $categoryDetails['catIds'])->distinct()->get()->toArray();
+
+        if ($request->ajax()) {
             $data = $request->all();
+            // echo "<pre>";
             // print_r($data);
-            // die;
+
+            // echo "nxt";
 
             // DYNAMIK FILTER FOR CHECKED VALUE
             $productFilters = Products_filter::productFilters();
-            foreach($productFilters as $key => $filter){
+            foreach ($productFilters as $key => $filter) {
 
-                if(isset($data[$filter['filter_column']]) && !empty($data[$filter['filter_column']])){
+                // return ($data[$filter['filter_column']]);
+
+                if (isset($data[$filter['filter_column']]) && !empty($data[$filter['filter_column']])) {
                     $products->whereIn($filter['filter_column'], $data[$filter['filter_column']]);
-
-                    $products = $products->get();
-
-                    return view("customer.listing-product.product", compact('products','url','productColors'));
                 }
-
             }
+
+            // die;
 
             // FILTER FOR SORT VALUE
             $_GET['sort'] = $data['sort'];
-            if(isset($_GET['sort']) && !empty($_GET['sort'])){
+            if (isset($_GET['sort']) && !empty($_GET['sort'])) {
 
-                if($_GET['sort'] == "letest"){
+                if ($_GET['sort'] == "letest") {
                     $products = $products->orderby("id", "DESC");
-                }elseif($_GET['sort'] == "lowest_price"){
+                } elseif ($_GET['sort'] == "lowest_price") {
                     $products = $products->orderby("product_price", "ASC");
-                }elseif($_GET['sort'] == "highest_price"){
+                } elseif ($_GET['sort'] == "highest_price") {
                     $products = $products->orderby("product_price", "DESC");
-                }elseif($_GET['sort'] == "a-z"){
+                } elseif ($_GET['sort'] == "a-z") {
                     $products = $products->orderby("product_name", "ASC");
-                }elseif($_GET['sort'] == "z-a"){
+                } elseif ($_GET['sort'] == "z-a") {
                     $products = $products->orderby("product_name", "DESC");
                 }
 
-                $products = $products->get();
-
-                return view("customer.listing-product.product", compact('products','url','productColors'));
             }
 
-        }else{
+            $products = $products->get();
+
+            return view("customer.listing-product.product", compact('products', 'url', 'productColors','productBrands'));
+        } else {
             $products = $products->orderby("products.id", "DESC")->get();
-            return view("customer.listing-product.listing", compact('products','url','categoryDetails','productColors'));
+            return view("customer.listing-product.listing", compact('products', 'url', 'categoryDetails', 'productColors','productBrands'));
         };
-
     }
-
-
-
 }

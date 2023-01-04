@@ -46,7 +46,7 @@
 
                 // alert();
                 var url = $("#url").val();
-                var sort = $("#sort").val();
+                var sort = $("#sort option:selected").val();
                 @foreach ($productFilters as $filters)
                     var {{ $filters['filter_column'] }} = get_filter('{{ $filters['filter_column'] }}');
                 @endforeach

@@ -44,7 +44,8 @@
     <!-- Fetch-Categories-from-Root-Category  /- -->
     <!-- Filters -->
     <!-- Filter-Size -->
-    <div class="facet-filter-associates">
+
+    {{-- <div class="facet-filter-associates">
         <h3 class="title-name">Size</h3>
         <form class="facet-form" action="#" method="post">
             <div class="associate-wrapper">
@@ -110,7 +111,8 @@
                 </label>
             </div>
         </form>
-    </div>
+    </div> --}}
+
     <!-- Filter-Size -->
     <!-- Filter-Color -->
     <div class="facet-filter-associates">
@@ -118,12 +120,10 @@
         <form class="facet-form" action="#" method="post">
             <div class="associate-wrapper">
                 @foreach ($productColors as $color)
-
-                <input type="checkbox" class="check-box" id="cbs-16">
-                <label class="label-text" for="cbs-16">{{ $color['product_color'] }}
-                    <span class="total-fetch-items">(1)</span>
-                </label>
-
+                    <input type="checkbox" class="check-box" id="cbs-16">
+                    <label class="label-text" for="cbs-16">{{ $color['product_color'] }}
+                        <span class="total-fetch-items">(1)</span>
+                    </label>
                 @endforeach
             </div>
         </form>
@@ -134,22 +134,13 @@
         <h3 class="title-name">Brand</h3>
         <form class="facet-form" action="#" method="post">
             <div class="associate-wrapper">
-                <input type="checkbox" class="check-box" id="cbs-21">
-                <label class="label-text" for="cbs-21">Calvin Klein
-                    <span class="total-fetch-items">(0)</span>
-                </label>
-                <input type="checkbox" class="check-box" id="cbs-22">
-                <label class="label-text" for="cbs-22">Diesel
-                    <span class="total-fetch-items">(0)</span>
-                </label>
-                <input type="checkbox" class="check-box" id="cbs-23">
-                <label class="label-text" for="cbs-23">Polo
-                    <span class="total-fetch-items">(0)</span>
-                </label>
-                <input type="checkbox" class="check-box" id="cbs-24">
-                <label class="label-text" for="cbs-24">Tommy Hilfiger
-                    <span class="total-fetch-items">(0)</span>
-                </label>
+                @foreach ($productBrands as $brand_id)
+                    <input type="checkbox" class="check-box" id="cbs-21">
+                    <label class="label-text" for="cbs-21">{{ $brand_id['brand']['name'] }}
+                        <span class="total-fetch-items">(0)</span>
+                    </label>
+                @endforeach
+
             </div>
         </form>
     </div>
