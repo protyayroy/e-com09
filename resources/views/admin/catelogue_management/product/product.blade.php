@@ -2,6 +2,20 @@
 
 @section('title', '| Product Management')
 
+<style>
+    .table td img,
+    .jsgrid .jsgrid-table td img {
+        width: 50px !important;
+        height: 50px !important;
+        border-radius: 5% !important;
+    }
+    /* td a i{
+
+        font-size: 20px;
+        margin-left: 10px;
+    } */
+</style>
+
 @section('content')
     <div class="content-wrapper">
         <div class="row">
@@ -21,11 +35,13 @@
                             Product</a>
                         <div class="clr"></div>
                         <div class="table-responsive">
-                            <table id="bootstrap_datatable" class="table table-striped table-bordered nowrap"
-                                style="width:100%">
+                            <table
+                            id="bootstrap_datatable"
+                             class="table table-striped table-bordered nowrap"
+                                >
                                 <thead>
                                     <tr>
-                                        <th> #Id </th>
+                                        <th> Id </th>
                                         <th> Name: </th>
                                         <th> Code: </th>
                                         <th> Price: </th>
@@ -35,6 +51,8 @@
                                         <th> Brand: </th>
                                         <th> Image: </th>
                                         <th> Status: </th>
+                                        <th> Attribute: </th>
+                                        <th> Gallary Image: </th>
                                         <th> Action: </th>
                                     </tr>
                                 </thead>
@@ -52,8 +70,8 @@
                                             <td>
                                                 @if (isset($product['product_image']) && !empty($product['product_image']))
                                                     <a
-                                                        href="{{ url('images/product_image/' . $product['product_image']) }}">
-                                                        <img src="{{ url('images/product_image/' . $product['product_image']) }}"
+                                                        href="{{ url('images/product_image/midium_img/' . $product['product_image']) }}">
+                                                        <img src="{{ url('images/product_image/midium_img/' . $product['product_image']) }}"
                                                             alt="">
                                                     </a>
                                                 @else
@@ -67,22 +85,34 @@
                                                     <a href="javascript:void(0)" class="change_status text-primary"
                                                         id="product-{{ $product['id'] }}" status_id="{{ $product['id'] }}"
                                                         status_path="product">
-                                                        <i class="mdi mdi-checkbox-marked-circle" status="Active"  title="Inactive Product"></i>
+                                                        <i class="mdi mdi-checkbox-marked-circle" status="Active"
+                                                            title="Inactive Product"></i>
                                                     </a>
                                                 @else
                                                     <a href="javascript:void(0)" class="change_status text-primary"
                                                         id="product-{{ $product['id'] }}" status_id="{{ $product['id'] }}"
                                                         status_path="product">
-                                                        <i class="mdi mdi-checkbox-blank-circle-outline"
-                                                            status="Inactive" title="Active Product"></i>
+                                                        <i class="mdi mdi-checkbox-blank-circle-outline" status="Inactive"
+                                                            title="Active Product"></i>
                                                     </a>
                                                 @endif
                                             </td>
-                                            <td class="action_collum">
-                                                <a href="{{ url('admin/product-attr/' . $product['id']) }}" class="text-success">
-                                                    <i class="mdi mdi-plus-circle" title="See Product Attribute"></i>
+
+                                            <td>
+                                                <a href="{{ url('admin/product/' . $product['id'].'/product-attr') }}">
+                                                    <i class="mdi mdi-information text-secondary" title="See Product Attribute"></i>
                                                 </a>
-                                                <a href="{{ url('admin/add-edit-product/' . $product['id']) }}" class="text-info">
+                                            </td>
+                                            <td>
+                                                <a href="{{ url('admin/product/' . $product['id'].'/product-gallary') }}">
+                                                    <i class="mdi mdi-image-multiple text-dark"
+                                                title="View Gallary Image"></i>
+                                                </a>
+                                            </td>
+
+                                            <td class="action_collum">
+                                                <a href="{{ url('admin/add-edit-product/' . $product['id']) }}"
+                                                    class="text-info">
                                                     <i class="mdi mdi-table-edit" title="Edit Product"></i>
                                                 </a>
                                                 <a href="javascript:void(0)" class="delete_row text-danger"

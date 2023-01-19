@@ -120,9 +120,9 @@
         <form class="facet-form" action="#" method="post">
             <div class="associate-wrapper">
                 @foreach ($productColors as $color)
-                    <input type="checkbox" class="check-box" id="cbs-16">
-                    <label class="label-text" for="cbs-16">{{ $color['product_color'] }}
-                        <span class="total-fetch-items">(1)</span>
+                    <input type="checkbox" class="check-box product_color" id="{{ $color['product_color'] }}" value="{{ $color['product_color'] }}" name="color[]">
+                    <label class="label-text" for="{{ $color['product_color'] }}">{{ $color['product_color'] }}
+                        <span class="total-fetch-items">(0)</span>
                     </label>
                 @endforeach
             </div>
@@ -135,8 +135,8 @@
         <form class="facet-form" action="#" method="post">
             <div class="associate-wrapper">
                 @foreach ($productBrands as $brand_id)
-                    <input type="checkbox" class="check-box" id="cbs-21">
-                    <label class="label-text" for="cbs-21">{{ $brand_id['brand']['name'] }}
+                    <input type="checkbox" class="check-box product_brand" id="{{ $brand_id['brand']['name'] }}" value="{{ $brand_id['brand_id'] }}">
+                    <label class="label-text" for="{{ $brand_id['brand']['name'] }}">{{ $brand_id['brand']['name'] }}
                         <span class="total-fetch-items">(0)</span>
                     </label>
                 @endforeach

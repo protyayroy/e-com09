@@ -80,6 +80,9 @@ $(document).on("click", ".change_status", function () {
 
 // DELETE WITH SWEET ALERT
 $(document).on("click", ".delete_row", function () {
+    // DELETE CODE START
+    var delete_id = $(this).attr("delete_id");
+    var delete_path = $(this).attr("delete_path");
 
     // SWEET ALERT START
     Swal.fire({
@@ -94,15 +97,12 @@ $(document).on("click", ".delete_row", function () {
         if (result.isConfirmed) {
             Swal.fire(
                 'Deleted!',
-                'Your file has been deleted.',
+                'Your ' + delete_path + ' has been deleted.',
                 'success'
             )
 
-            // DELETE CODE START
-            var delete_id = $(this).attr("delete_id");
-            var delete_path = $(this).attr("delete_path");
-
-            window.location = "delete-"+delete_path+"/"+delete_id;
+            // DELETE ROUTE
+            window.location = "delete-" + delete_path + "/" + delete_id;
         }
     })
 
@@ -123,19 +123,19 @@ $(document).on("click", ".delete_row", function () {
 //     })
 // })
 
-$("#section_id").change(function(){
+$("#section_id").change(function () {
     var category_id = $(this).val();
     // alert(section_id);
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        url : 'change_filter',
-        type : 'get',
-        data : {
-            category_id:category_id
+        url: 'change_filter',
+        type: 'get',
+        data: {
+            category_id: category_id
         },
-        success : function(data){
+        success: function (data) {
             $("#select_filter").html(data.view);
         }
     })

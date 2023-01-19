@@ -1,9 +1,10 @@
 @foreach ($products as $product)
+{{-- {{$url}} --}}
     <div class="product-item col-lg-4 col-md-6 col-sm-6">
         <div class="item">
             <div class="image-container">
-                <a class="item-img-wrapper-link" href="single-product.html">
-                    <img class="img-fluid" img src="{{ url('images/product_image/' . $product['product_image']) }}"
+                <a class="item-img-wrapper-link" href="{{ url('single-product/'.$product['id']) }}" >
+                    <img class="img-fluid" src="{{ url('images/product_image/midium_img/' . $product['product_image']) }}"
                         alt="{{ $product['product_image'] }}">
                 </a>
                 <div class="item-action-behaviors">

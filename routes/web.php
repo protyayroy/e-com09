@@ -118,7 +118,31 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\admin')->group(function
         Route::match(['post', 'get'], 'add-edit-product/{id?}', 'ProductController@productAddEdit');
 
         // DELETE PRODUCT
-        Route::get('delete-category/{id}', 'ProductController@destroy');
+        Route::get('delete-product/{id}', 'ProductController@destroy');
+
+        // VIEW PRODUCT ATTRIBUTE
+        Route::get('product/{product_id}/product-attr', 'ProductAttributeController@productAttr');
+
+        // ADD PRODUCT ATTRIBUTE
+        Route::match(['post', 'get'], 'product/{product_id}/add-product-attr', 'ProductAttributeController@addAttribute');
+
+        // EDIT PRODUCT ATTRIBUTE
+        Route::post('edit-product-attr/{attr_id}', 'ProductAttributeController@editAttribute');
+
+        // DELETE PRODUCT ATTRIBUTE
+        Route::get('product/{product_id}/delete-product-attr/{attr_id}', 'ProductAttributeController@destroy');
+
+        // VIEW PRODUCT GALLARY IMAGE
+        Route::get('product/{product_id}/product-gallary', 'ProductImageController@gallary');
+
+        // ADD PRODUCT GALLARY IMAGE
+        Route::match(['post', 'get'], 'product/{product_id}/add-product-gallary', 'ProductImageController@addGallary');
+
+        // EDIT PRODUCT GALLARY IMAGE
+        Route::post('edit-product-gallary/{gallary_id}', 'ProductImageController@editGallary');
+
+        // DELETE PRODUCT GALLARY IMAGE
+        Route::get('product/{product_id}/delete-product-gallary/{gallary_id}', 'ProductImageController@destroy');
 
         // CHANGE CATEGORY TYPE
         // Route::get('change-category/{id}', 'CategoryController@changeCategoryType');
@@ -158,21 +182,20 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\admin')->group(function
 
 // <---------------------------------------------------------> //
 
-Route::namespace("App\Http\Controllers\customer")->group(function(){
+Route::namespace("App\Http\Controllers\customer")->group(function () {
 
     // STARTNG PAGE
     Route::get("/", "IndexController@index");
 
-    $catUrls = Category::select('url')->where('status',1)->get()->pluck('url');
-    foreach($catUrls as $key=>$url){
-    //     echo '<pre>';
-    // print_r($key);
-    // die();
-    // dd( $url);
-    Route::match(['get','post'], "/".$url, "IndexController@listing");
+    $catUrls = Category::select('url')->where('status', 1)->get()->pluck('url');
+    foreach ($catUrls as $key => $url) {
+        //     echo '<pre>';
+        // print_r($key);
+        // die();
+        // dd( $url);
+        Route::match(['get', 'post'], "/" . $url, "IndexController@listing");
     };
 
+    // SINGLE PRODUCT VIEW PAGE
+    Route::get("/single-product/{id}", "IndexController@singleProduct");
 });
-
-
-

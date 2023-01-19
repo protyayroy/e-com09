@@ -20,9 +20,9 @@
                 <div class="form-group">
                     <label for="{{ $filter['filter_column'] }}">{{ $filter['filter_name'] }}:</label>
                     <select name="{{ $filter['filter_column'] }}" id="{{ $filter['filter_column'] }}" class="form-control">
-                        <option disabled selected> Select {{ $filter['filter_column'] }} Type</option>
+                        <option disabled {{ empty($products['id']) ? 'selected' : '' }}> Select {{ $filter['filter_column'] }} Type</option>
                         @foreach ($filter['getFilterValue'] as $filterValue)
-                            <option {{ (isset($products['id'])) && ($products[$filter['filter_column']] == $filterValue['filter_value']) ? 'selected' : ''}}>&nbsp;{{ $filterValue['filter_value'] }}</option>
+                            <option {{ (isset($products['id'])) && ($products[$filter['filter_column']] == $filterValue['filter_value']) ? 'selected' : '' }}>&nbsp;{{ ucfirst($filterValue['filter_value']) }}</option>
                         @endforeach
                     </select>
                     @error($filter['filter_column'])
@@ -49,3 +49,7 @@
         @endif --}}
     @endif
 @endforeach
+
+
+
+

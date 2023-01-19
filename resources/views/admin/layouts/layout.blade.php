@@ -15,9 +15,10 @@
     <!-- endinject -->
 
     <!-- Plugin css for this page -->
-    <link rel="stylesheet" href="{{ url('admin/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
 
-    <link rel="stylesheet" type="text/css" href="{{ url('admin/js/select.dataTables.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ url('admin/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}"> --}}
+
+    {{-- <link rel="stylesheet" type="text/css" href="{{ url('admin/js/select.dataTables.min.css') }}"> --}}
 
     <!-- End plugin css for this page -->
 
@@ -30,7 +31,14 @@
     <link rel="stylesheet" href="{{ asset('admin') }}/vendors/mdi/css/materialdesignicons.min.css">
 
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css" />
+    {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css" /> --}}
+
+
+
+    {{-- DATATABLE CSS --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> --}}
+
 
     <style>
         .alert-dismissible .close {
@@ -69,14 +77,10 @@
             font-weight: 600;
         }
 
-        .status_collum a {
+        /* .status_collum a {
             font-size: 20px;
             margin-left: 20px;
-            /* color: #4B49AC; */
-        }
-
-        /* .status_collum a:hover {
-            color: #ffc107;
+            /* color: #4B49AC;
         } */
 
         .vendor_details {
@@ -85,14 +89,15 @@
             /* color: #4B49AC; */
         }
 
-        /* .vendor_details:hover {
-            color: #ffc107;
-        } */
-
-        .action_collum a {
+        /* .action_collum a {
             font-size: 20px;
             margin-left: 10px;
-            /* color: #4B49AC; */
+            /* color: #4B49AC;
+        } */
+        td a i {
+
+            font-size: 20px;
+            margin-left: 10px;
         }
 
         .action_collum a:hover {
@@ -159,10 +164,12 @@
             color: #ffffff;
             padding: 13px;
         }
-        .add_button:hover{
+
+        .add_button:hover {
             color: #ffffff;
             background: #46a146;
         }
+
         .remove_button {
             font-size: 0.875rem;
             line-height: 1;
@@ -172,11 +179,13 @@
             color: #ffffff;
             padding: 13px;
         }
-        .remove_button:hover{
+
+        .remove_button:hover {
             color: #ffffff !important;
             background: #fa0000;
         }
-        #red{
+
+        #red {
             color: red;
         }
     </style>
@@ -404,11 +413,11 @@
 
 
     <!-- pblm -->
-    <script src="{{ url('admin/vendors/datatables.net/jquery.dataTables.js') }}"></script>
+    {{-- <script src="{{ url('admin/vendors/datatables.net/jquery.dataTables.js') }}"></script> --}}
     <!-- pblm -->
 
-    <script src="{{ url('admin/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
-    <script src="{{ url('admin/js/dataTables.select.min.js') }}"></script>
+    {{-- <script src="{{ url('admin/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script> --}}
+    {{-- <script src="{{ url('admin/js/dataTables.select.min.js') }}"></script> --}}
 
 
 
@@ -429,10 +438,100 @@
     <!-- Sweet Alert js -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script> -->
+    {{-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script> --}}
 
     <!-- Custom js  -->
     <script src="{{ url('admin/js/custom.js') }}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
+
+
+    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
+
+    <script>
+        $(document).ready(function() {
+            // ADD ATTRIBUTE ROW
+            $(document).on("click", "#add_attribute", function(e) {
+                e.preventDefault();
+                var add_attr = '';
+                add_attr += '<div class="form-group d-flex mb-2" id="remove_from">';
+                add_attr +=
+                    '<input type="text" class="form-control mr-1" name="size[]" placeholder="Size">';
+                add_attr +=
+                    '<input type="text" class="form-control mr-1" name="price[]" placeholder="Price">';
+                add_attr +=
+                    '<input type="text" class="form-control mr-1" name="stock[]" placeholder="Stock">';
+                add_attr +=
+                    '<input type="text" class="form-control mr-1" name="stock_limit_alert[]" placeholder="Stock Limit Alert">';
+                add_attr += '<button class="btn btn-danger" id="remove_attribute">Remove</button>';
+                add_attr += '</div>';
+
+                $("#attr_field").append(add_attr)
+            });
+
+            // REMOVE ATTRIBUTE ROW
+            $(document).on('click', '#remove_attribute', function() {
+                $(this).closest('#remove_from').remove();
+            });
+
+            // ADD GALLERY IMAGE ROW
+            $(document).on('click', '#add_gallary_img', function(e) {
+                e.preventDefault();
+                var gallary_img = '';
+                gallary_img += '<div class="d-flex mt-3" id="gallary_img_row">';
+                gallary_img +=
+                    '<input type="file" class="form-control-file" name="product_gallery_image[]">';
+                gallary_img += '<button class="btn btn-danger float-right" id="remove_gallary_img" style="margin-right:130px">Remove</button>';
+                gallary_img += '<div class="clr"></div>';
+                gallary_img += '</div>';
+
+                $('#gallary_img').append(gallary_img);
+            });
+
+            // REMOVE GALLERY IMAGE ROW
+            $(document).on('click', '#remove_gallary_img', function() {
+                $(this).closest('#gallary_img_row').remove();
+            });
+        })
+    </script>
+
+    {{-- <script type="text/javascript">
+        $(document).ready(function() {
+            // alert();
+            function get_value(class_name) {
+                var value = [];
+                $("." + class_name).each(function() {
+
+                    filter.push($(this).val());
+
+                });
+                return value;
+            }
+
+            var color = get_value('color');
+            var size = get_value('size');
+            // alert(color)
+            $("#Add_p").click(function(e) {
+                e.preventDefault();
+                alert("color")
+            })
+            // $.ajax({
+            //     url: 'admin/add-edit-product',
+            //     type : "post",
+            //     data : {
+            //         color:color,
+            //         size:size
+            //     },
+            //     success: function(data){
+            //         alert(data);
+            //     }, error: function(data){
+            //         alert("Error");
+            //     }
+            // })
+        })
+    </script> --}}
 
 </body>
 

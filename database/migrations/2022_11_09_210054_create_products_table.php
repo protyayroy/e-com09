@@ -29,9 +29,9 @@ return new class extends Migration
             $table->string('product_weight');
             $table->string('product_image');
             $table->string('product_video');
-            $table->string('product_description');
+            $table->longText('product_description');
             $table->string('meta_title');
-            $table->string('meta_description');
+            $table->text('meta_description');
             $table->string('meta_keywords');
             $table->tinyInteger('status');
             $table->enum('is_feature',['No','Yes']);

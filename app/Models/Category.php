@@ -27,7 +27,7 @@ class Category extends Model
     public static function getCatIds($url)
     {
         $categoryDetails = Category::with("subcategory")->where('url', $url)->first()->toArray();
-
+        // dd($categoryDetails);
         $catIds = array();
         $catIds[] = $categoryDetails["id"];
         foreach ($categoryDetails["subcategory"] as $key => $subCat) {
