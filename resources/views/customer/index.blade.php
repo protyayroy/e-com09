@@ -90,7 +90,8 @@
                                                 <div class="what-product-is">
                                                     <ul class="bread-crumb">
                                                         <li>
-                                                            <a href="shop-v1-root-category.html">{{ $product['product_code'] }}</a>
+                                                            <a
+                                                                href="shop-v1-root-category.html">{{ $product['product_code'] }}</a>
                                                         </li>
                                                     </ul>
                                                     <h6 class="item-title">
@@ -109,9 +110,11 @@
                                                     <div class="item-new-price">
                                                         &#x9F3; {{ $newPriceAndDiscount['getNewPrice'] }}
                                                     </div>
-                                                    <div class="item-old-price">
-                                                        &#x9F3; {{ $product['product_price'] }}
-                                                    </div>
+                                                    @if ($newPriceAndDiscount['discountPrice'] > 0)
+                                                        <div class="item-old-price">
+                                                            &#x9F3; {{ $product['product_price'] }}
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                             <div class="tag new">

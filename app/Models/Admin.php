@@ -12,4 +12,11 @@ class Admin extends Authenticatable
 
     protected $guard = 'admin';
 
+
+    public static function addByName($admin_id){
+        $admin = Admin::where('id', $admin_id)->get();
+
+        return $admin;
+    }
+
 }

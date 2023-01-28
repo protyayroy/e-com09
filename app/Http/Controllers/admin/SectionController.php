@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Section;
 use Illuminate\Console\View\Components\Alert;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class SectionController extends Controller
 {
@@ -42,9 +46,11 @@ class SectionController extends Controller
             $title = "Add Section";
             $message = 'Section has been added successfully';
             $section = new Section;
+            $image_name = "";
         } else {
             $title = "Edit Section";
             $section = Section::find($id);
+            $image_name = $section->image;
             $message = 'Section has been updated successfully';
         }
         // $section = $section->toArray();
@@ -53,8 +59,47 @@ class SectionController extends Controller
             $request->validate([
                 'name' => 'required|regex:/^[a-zA-Z0-9\p{Arabic}_]+$/u'
             ]);
+            // UPLOAD BRAND LOGO
+            if($request->hasFile('image')){
+                $image_tmp = $request->file('image');
+
+                if ($image_tmp->isValid()) {
+                    // DELETE PREVIOUS IMAGE
+                    $previous_image_path = 'images/section_img/' . $section->image;
+                    if (File::exists($previous_image_path)) {
+                        File::delete($previous_image_path);
+                    }
+                    // GET FULL IMAGE NAME WITH EXTENTION
+                    $image_full_name = $image_tmp->getClientOriginalName();
+
+                    // GET IMAGE NAME WITHOUT EXTENSION
+                    $image_first_name = pathinfo($image_full_name, PATHINFO_FILENAME);
+
+                    // GET IMAGE EXTENSION
+                    $extention = $image_tmp->getClientOriginalExtension();
+
+                    // TO GET UNIQUE IMAGE NAME
+                    $unique = Str::random(10);
+
+                    // SET UNIQUE IMAGE NAME
+                    $image_name = $image_first_name . $unique . '.' . $extention;
+
+                    // SET IMAGE PATH
+                    $image_path = 'images/section_img/' . $image_name;
+
+                    Image::make($image_tmp)->resize(100, 100)->save($image_path);
+                }
+
+            }
+
+            $section->admin_id = Auth::guard('admin')->user()->id;
             $section->name = $request->name;
-            $section->status = 1;
+            $section->image = $image_name;
+            if(Auth::guard('admin')->user()->type == "Vendor"){
+                $section->status = 0;
+            }else{
+                $section->status = 1;
+            }
             $section->save();
             return redirect('admin/section')->with('success_msg', $message);
         }

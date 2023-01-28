@@ -1,3 +1,7 @@
+@php
+    use App\Models\Admin;
+@endphp
+
 @extends('admin.layouts.layout')
 
 @section('title', '| Section Management')
@@ -28,19 +32,25 @@
                                         <th> #Id </th>
                                         <th> Name: </th>
                                         <th> Added By: </th>
-                                        @if (Auth::guard('admin')->user()->type != 'Vendor')
-                                            <th> Status: </th>
-                                        @endif
+                                        <th> Status: </th>
                                         <th> Action: </th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
                                     @foreach ($sections as $section)
                                         <tr>
                                             <td> {{ $loop->index + 1 }} </td>
                                             <td> {{ $section['name'] }} </td>
-
-                                            <td>  </td>
+                                            <td>
+                                                @php
+                                                    $addByName = Admin::addByName($section['admin_id']);
+                                                    foreach ($addByName as $value) {
+                                                        echo $value['name'] . " <br><small class='text-dark'>(".$value['type'].")</small>";
+                                                    }
+                                                @endphp
+                                            </td>
+                                            {{-- <td>{{ $addByName['name'] }}</td> --}}
 
                                             @if (Auth::guard('admin')->user()->type != 'Vendor')
                                                 <td class="status_collum">
@@ -59,20 +69,40 @@
                                                         </a>
                                                     @endif
                                                 </td>
+                                            @else
+                                                <td class="status_collum">
+                                                    @if ($section['status'] == 1)
+                                                        <a class="text-primary" id="section-{{ $section['id'] }}"
+                                                            status_id="{{ $section['id'] }}" status_path="section">
+                                                            <i class="mdi mdi-checkbox-marked-circle" status="Active"></i>
+                                                        </a>
+                                                    @else
+                                                        <a class="text-primary" id="section-{{ $section['id'] }}"
+                                                            status_id="{{ $section['id'] }}" status_path="section">
+                                                            <i class="mdi mdi-checkbox-blank-circle-outline"
+                                                                status="Inactive"></i>
+                                                        </a>
+                                                    @endif
+                                                </td>
                                             @endif
 
-                                            <td class="action_collum">
-                                                <a href="{{ url('admin/add-edit-section/' . $section['id']) }}"
-                                                    class="text-info">
-                                                    <i class="mdi mdi-table-edit"></i>
-                                                </a>
-                                                @if (Auth::guard('admin')->user()->type != 'Vendor')
-                                                    <a href="javascript:void(0)" class="delete_row text-danger"
-                                                        delete_id="{{ $section['id'] }}" delete_path="section">
-                                                        <i class="mdi mdi-delete-forever"></i>
+                                            @if (Auth::guard('admin')->user()->id == $section['admin_id'])
+                                                <td class="action_collum">
+                                                    <a href="{{ url('admin/add-edit-section/' . $section['id']) }}"
+                                                        class="text-info">
+                                                        <i class="mdi mdi-table-edit"></i>
                                                     </a>
-                                                @endif
-                                            </td>
+                                                    @if (Auth::guard('admin')->user()->type != 'Vendor')
+                                                        <a href="javascript:void(0)" class="delete_row text-danger"
+                                                            delete_id="{{ $section['id'] }}" delete_path="section">
+                                                            <i class="mdi mdi-delete-forever"></i>
+                                                        </a>
+                                                    @endif
+                                                </td>
+                                            @else
+                                                <td></td>
+                                            @endif
+
                                         </tr>
                                     @endforeach
                                 </tbody>

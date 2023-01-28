@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('parent_id');
             $table->integer('section_id');
+            $table->integer('admin_id');
             $table->string('name');
             $table->float('discount');
             $table->string('image');
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->string('meta_title');
             $table->string('meta_description');
             $table->string('meta_keywords');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

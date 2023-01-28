@@ -9,6 +9,7 @@
         height: 50px !important;
         border-radius: 5% !important;
     }
+
     /* td a i{
 
         font-size: 20px;
@@ -35,10 +36,7 @@
                             Product</a>
                         <div class="clr"></div>
                         <div class="table-responsive">
-                            <table
-                            id="bootstrap_datatable"
-                             class="table table-striped table-bordered nowrap"
-                                >
+                            <table id="bootstrap_datatable" class="table table-striped table-bordered nowrap">
                                 <thead>
                                     <tr>
                                         <th> Id </th>
@@ -97,16 +95,17 @@
                                                     </a>
                                                 @endif
                                             </td>
-
                                             <td>
-                                                <a href="{{ url('admin/product/' . $product['id'].'/product-attr') }}">
-                                                    <i class="mdi mdi-information text-secondary" title="See Product Attribute"></i>
+                                                <a href="{{ url('admin/product/' . $product['id'] . '/product-attr') }}">
+                                                    <i class="mdi mdi-information text-secondary"
+                                                        title="See Product Attribute"></i>
                                                 </a>
                                             </td>
                                             <td>
-                                                <a href="{{ url('admin/product/' . $product['id'].'/product-gallary') }}">
+                                                <a
+                                                    href="{{ url('admin/product/' . $product['id'] . '/product-gallary') }}">
                                                     <i class="mdi mdi-image-multiple text-dark"
-                                                title="View Gallary Image"></i>
+                                                        title="View Gallary Image"></i>
                                                 </a>
                                             </td>
 

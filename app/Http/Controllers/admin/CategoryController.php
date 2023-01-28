@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
@@ -29,24 +30,24 @@ class CategoryController extends Controller
             $title = "Add Category";
             $message = 'Category has been added successfully';
             $category = new Category;
-            $image = "";
+            $image_name = "";
         } else {
             $title = "Edit Category";
             $category = Category::find($id);
             $message = 'Category has been updated successfully';
-            $image = $category->image;
+            $image_name = $category->image;
         }
 
         // $category = Category::with('parentcategory')->where('status', 1)->get()->toArray();
         // dd($category);
         if ($request->isMethod('post')) {
 
-            if($request->hasFile('image')){
+            if ($request->hasFile('image')) {
                 $image_tmp = $request->file('image');
-                if($image_tmp->isValid()){
+                if ($image_tmp->isValid()) {
                     // DELETE PREVIOUS IMAGE
-                    $previous_image_path = 'images/category_image/'.$category->image;
-                    if(File::exists($previous_image_path)){
+                    $previous_image_path = 'images/category_image/' . $category->image;
+                    if (File::exists($previous_image_path)) {
                         File::delete($previous_image_path);
                     }
                     // GET FULL IMAGE NAME WITH EXTENTION
@@ -62,15 +63,16 @@ class CategoryController extends Controller
                     $unique = Str::random(10);
 
                     // SET UNIQUE IMAGE NAME
-                    $image_name = $image_first_name.$unique.'.'.$extention;
+                    $image_name = $image_first_name . $unique . '.' . $extention;
 
                     // SET IMAGE PATH
-                    $image_path = 'images/category_image/'.$image_name;
+                    $image_path = 'images/category_image/' . $image_name;
                     Image::make($image_tmp)->resize(100, 100)->save($image_path);
                 }
-            } else{
-                $image_name = $image;
             }
+            // else {
+            //     $image_name = $image;
+            // }
             // dd($image_name);
             $request->validate([
                 'name' => 'required|regex:/^[a-zA-Z\s\-\p{Arabic}_]+$/u'
@@ -78,26 +80,28 @@ class CategoryController extends Controller
 
             $category->section_id = $request->section_id;
             $category->parent_id = $request->parent_id;
+            $category->admin_id = Auth::guard('admin')->user()->id;
             $category->name = $request->name;
             $category->discount = $request->discount;
             $category->description = $request->description;
-            $category->url = $request->url."-".Str::random(10);
+            $category->url = $request->url . "-" . Str::random(10);
             $category->meta_title = $request->meta_title;
             $category->meta_description = $request->meta_description;
             $category->meta_keywords = $request->meta_keywords;
             $category->image = $image_name;
-            $category->status = 1;
+            if (Auth::guard('admin')->user()->type == "Vendor") {
+                $category->status = 0;
+            } else {
+                $category->status = 1;
+            }
             $category->save();
             return redirect('admin/category')->with('success_msg', $message);
         }
 
         $sections = Section::get()->toArray();
-        $getCategories = Category::with('section','subcategory')->where('parent_id', 0)->get()->toArray();
+        $getCategories = Category::with('section', 'subcategory')->where('parent_id', 0)->get()->toArray();
         // dd($getCategories);
         return view('admin.catelogue_management.category.add-edit-category', compact('title', 'category', 'sections', 'getCategories'));
-
-
-
     }
 
     //  UPDATE CATEGORY STATUS
@@ -120,7 +124,7 @@ class CategoryController extends Controller
     //  CHANGE CATEGORY TYPE
     public function changeCategoryType($id)
     {
-        $getCategories = Category::with('subcategory')->where(['parent_id'=> 0, 'section_id'=> $id])->get()->toArray();
+        $getCategories = Category::with('subcategory')->where(['parent_id' => 0, 'section_id' => $id])->get()->toArray();
         // print_r($getCategories); die;
         return view('admin.catelogue_management.category.appendCategoryLabel', compact('getCategories'));
     }

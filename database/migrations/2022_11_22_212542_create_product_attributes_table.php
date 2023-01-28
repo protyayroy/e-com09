@@ -15,12 +15,11 @@ return new class extends Migration
     {
         Schema::create('product_attributes', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('product_id');
-            $table->string('sku');
+            $table->bigInteger('product_id');
             $table->string('size');
             $table->float('price');
             $table->integer('stock');
-            $table->tinyInteger('status');
+            $table->string('stock_limit_alert');
             $table->timestamps();
         });
     }

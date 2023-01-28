@@ -35,7 +35,6 @@ class ProductAttributeController extends Controller
                 $attribute->price = $data['price'][$key];
                 $attribute->stock = $data['stock'][$key];
                 $attribute->stock_limit_alert = $data['stock_limit_alert'][$key];
-                $attribute->status = 1;
                 $attribute->save();
             }
 
@@ -56,7 +55,6 @@ class ProductAttributeController extends Controller
             $attribute->price = $data['edit_price'];
             $attribute->stock = $data['edit_stock'];
             $attribute->stock_limit_alert = $data['edit_stock_limit_alert'];
-            $attribute->status = 1;
             $attribute->save();
 
 

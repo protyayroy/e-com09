@@ -13,7 +13,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- Standard Favicon -->
-    <link href="favicon.ico" rel="shortcut icon">
+    {{-- <link href="{{ asset('customer') }}/favicon.ico" rel="shortcut icon"> --}}
     <!-- Base Google Font for Web-app -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
     <!-- Google Fonts for Banners only -->
@@ -400,7 +400,9 @@
 
     {{-- @yield('jquery') --}}
 
-    @include("customer.layouts.script")
+    @include('customer.layouts.script')
+
+
 </body>
 
 </html>

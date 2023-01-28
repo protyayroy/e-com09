@@ -5,6 +5,10 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Brand;
+use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class BrandController extends Controller
 {
@@ -39,18 +43,60 @@ class BrandController extends Controller
         if ($id == "") {
             $title = "Add Brand";
             $message = 'Brand has been added successfully';
+            $image_name = "";
             $brand = new Brand;
         } else {
             $title = "Edit Brand";
             $brand = Brand::find($id);
+            $image_name = $brand->logo;
             $message = 'Brand has been updated successfully';
         }
         if ($request->isMethod('post')) {
             $request->validate([
                 'name' => 'required'
             ]);
+
+            // UPLOAD BRAND LOGO
+            if($request->hasFile('logo')){
+                $image_tmp = $request->file('logo');
+
+                if ($image_tmp->isValid()) {
+                    // DELETE PREVIOUS IMAGE
+                    $previous_image_path = 'images/brand_logo/' . $brand->product_image;
+                    if (File::exists($previous_image_path)) {
+                        File::delete($previous_image_path);
+                    }
+                    // GET FULL IMAGE NAME WITH EXTENTION
+                    $image_full_name = $image_tmp->getClientOriginalName();
+
+                    // GET IMAGE NAME WITHOUT EXTENSION
+                    $image_first_name = pathinfo($image_full_name, PATHINFO_FILENAME);
+
+                    // GET IMAGE EXTENSION
+                    $extention = $image_tmp->getClientOriginalExtension();
+
+                    // TO GET UNIQUE IMAGE NAME
+                    $unique = Str::random(10);
+
+                    // SET UNIQUE IMAGE NAME
+                    $image_name = $image_first_name . $unique . '.' . $extention;
+
+                    // SET IMAGE PATH
+                    $image_path = 'images/brand_logo/' . $image_name;
+
+                    Image::make($image_tmp)->resize(100, 100)->save($image_path);
+                }
+
+            }
+
             $brand->name = $request->name;
-            $brand->status = 1;
+            $brand->admin_id = Auth::guard('admin')->user()->id;
+            $brand->logo = $image_name;
+            if(Auth::guard('admin')->user()->type == "Vendor"){
+                $brand->status = 0;
+            }else{
+                $brand->status = 1;
+            }
             $brand->save();
             return redirect('admin/brand')->with('success_msg', $message);
         }

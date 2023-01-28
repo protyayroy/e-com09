@@ -17,7 +17,7 @@ class Product extends Model
 
     // PRODUCT RELATION WITH CATEGORY
     public function category(){
-        return $this->belongsTo('App\Models\Category')->select('id', 'name')->where('status', 1);
+        return $this->belongsTo('App\Models\Category')->select('id', 'name','discount')->where('status', 1);
     }
 
     // PRODUCT RELATION WITH BRAND
@@ -32,6 +32,15 @@ class Product extends Model
 
     // NEW PRICE AFTER DISCOUNT A PRODUCT
     public static function newPrice($id){
+
+        // TEST QUERY
+        // $oldPrice = Product::select('product_price','product_discount','category_id')->with([
+        //     'category' => function($query){
+        //         $query->with('subcategory');
+        //     }
+        // ])->where(['id' => $id, 'status' => 1])->first();
+
+
         $oldPrice = Product::select('product_price','product_discount')->where(['id' => $id, 'status' => 1])->first();
         $discountPrice = ($oldPrice['product_discount']*$oldPrice['product_price'])/100;
         $getNewPrice = ($oldPrice['product_price']-$discountPrice);
@@ -43,11 +52,17 @@ class Product extends Model
     public static function relatedProduct($id){
         $product = Product::where('id' , $id)->first();
         $category_id = $product['category_id'];
-        $arent_id = Category::select('parent_id')->where('id', $category_id)->first();
-        $url = Category::select('url')->where('id', $arent_id['parent_id'])->first();
+        $parent_id = Category::select('parent_id')->where('id', $category_id)->first();
+        $url = Category::select('url')->where('id', $parent_id['parent_id'])->first();
 
         $categoryDetails = Category::getCatIds($url['url']);
         return $categoryDetails['catIds'];
     }
+
+    // // GET ATTRIBUTE STOCK FOR CART PAGE
+    // public static function getAttrStock($product_id){
+    //     $product = Product::where('id', $product_id)->with('attribute')->select('attribute')->first();
+    //     return $product;
+    // }
 
 }

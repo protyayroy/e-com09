@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('main_image_colors', function (Blueprint $table) {
+        Schema::create('carts', function (Blueprint $table) {
             $table->id();
+            $table->string('cookie_id');
+            $table->bigInteger('user_id')->nullable();
             $table->bigInteger('product_id');
-            $table->string('color');
-            $table->string('main_image');
+            $table->string('size');
+            $table->string('quantity');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('main_image_colors');
+        Schema::dropIfExists('carts');
     }
 };

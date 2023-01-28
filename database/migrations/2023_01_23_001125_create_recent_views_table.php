@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sections', function (Blueprint $table) {
+        Schema::create('recent_views', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('admin_id');
-            $table->string('image')->nullable();
-            $table->tinyInteger('status');
+            $table->string('cookie_id');
+            $table->bigInteger('product_id');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sections');
+        Schema::dropIfExists('recent_views');
     }
 };

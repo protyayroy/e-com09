@@ -1,3 +1,7 @@
+@php
+    use App\Models\Admin;
+@endphp
+
 @extends('admin.layouts.layout')
 
 @section('title', '| Category Management')
@@ -32,9 +36,7 @@
                                         <th> Added By: </th>
                                         <th> Discount: </th>
                                         <th> Image: </th>
-                                        @if (Auth::guard('admin')->user()->type != 'Vendor')
-                                            <th> Status: </th>
-                                        @endif
+                                        <th> Status: </th>
                                         <th> Action: </th>
                                     </tr>
                                 </thead>
@@ -53,7 +55,14 @@
                                             </td>
                                             <td> {{ $category['section']['name'] }} </td>
 
-                                            <td> </td>
+                                            <td>
+                                                @php
+                                                    $addByName = Admin::addByName($category['admin_id']);
+                                                    foreach ($addByName as $value) {
+                                                        echo $value['name'] . " <br><small class='text-dark'>(".$value['type'].")</small>";
+                                                    }
+                                                @endphp
+                                            </td>
 
                                             <td> {{ $category['discount'] }}% </td>
                                             <td>
@@ -87,21 +96,39 @@
                                                         </a>
                                                     @endif
                                                 </td>
+                                            @else<td class="status_collum">
+                                                    @if ($category['status'] == 1)
+                                                        <a class="text-primary" id="category-{{ $category['id'] }}"
+                                                            status_id="{{ $category['id'] }}" status_path="category">
+                                                            <i class="mdi mdi-checkbox-marked-circle" status="Active"></i>
+                                                        </a>
+                                                    @else
+                                                        <a class="text-primary" id="category-{{ $category['id'] }}"
+                                                            status_id="{{ $category['id'] }}" status_path="category">
+                                                            <i class="mdi mdi-checkbox-blank-circle-outline"
+                                                                status="Inactive"></i>
+                                                        </a>
+                                                    @endif
+                                                </td>
                                             @endif
 
-                                            <td class="action_collum">
-                                                <a href="{{ url('admin/add-edit-category/' . $category['id']) }}"
-                                                    class="text-info">
-                                                    <i class="mdi mdi-table-edit"></i>
-                                                </a>
-
-                                                @if (Auth::guard('admin')->user()->type != 'Vendor')
-                                                    <a href="javascript:void(0)" class="delete_row text-danger"
-                                                        delete_id="{{ $category['id'] }}" delete_path="category">
-                                                        <i class="mdi mdi-delete-forever"></i>
+                                            @if (Auth::guard('admin')->user()->id == $category['admin_id'])
+                                                <td class="action_collum">
+                                                    <a href="{{ url('admin/add-edit-category/' . $category['id']) }}"
+                                                        class="text-info">
+                                                        <i class="mdi mdi-table-edit"></i>
                                                     </a>
-                                                @endif
-                                            </td>
+
+                                                    @if (Auth::guard('admin')->user()->type != 'Vendor')
+                                                        <a href="javascript:void(0)" class="delete_row text-danger"
+                                                            delete_id="{{ $category['id'] }}" delete_path="category">
+                                                            <i class="mdi mdi-delete-forever"></i>
+                                                        </a>
+                                                    @endif
+                                                </td>
+                                            @else
+                                                <td></td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

@@ -13,9 +13,9 @@ use App\Models\Section;
 use App\Models\Products_filter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
@@ -83,54 +83,16 @@ class ProductController extends Controller
                 // ADD DIFFERENT PRODUCT PRODUCT GROUP CODE FOR DIFFERENT VENDOR
                 if ($request->product_group_code != $productsGroupCode['product_group_code']) {
 
-                    // ADD MULTIPLE IMAGE / GALLARY IMAGE
-                    // if ($request->hasFile('product_gallery_image')) {
-                    //     $multiple_image_tmp = $request->file('product_gallery_image');
-
-                    //     foreach ($multiple_image_tmp as $image_tmp) {
-                    //         if ($image_tmp->isValid()) {
-                    //             // GET FULL IMAGE NAME WITH EXTENTION
-                    //             $image_full_name = $image_tmp->getClientOriginalName();
-
-                    //             // GET IMAGE NAME WITHOUT EXTENSION
-                    //             $image_first_name = pathinfo($image_full_name, PATHINFO_FILENAME);
-
-                    //             // GET IMAGE EXTENSION
-                    //             $extention = $image_tmp->getClientOriginalExtension();
-
-                    //             // TO GET UNIQUE IMAGE NAME
-                    //             $unique = Str::random(10);
-
-                    //             // SET UNIQUE IMAGE NAME
-                    //             $multiple_image_name = $image_first_name . $unique . '.' . $extention;
-
-                    //             // SET IMAGE PATH
-                    //             // $small_image_path = 'images/product_image/small_img/' . $multiple_image_name;
-                    //             $large_image_path = 'images/product_image/large_img/' . $multiple_image_name;
-                    //             // $midium_image_path = 'images/product_image/midium_img' . $multiple_image_name;
-
-                    //             // RESIZE && SAVE IMAGE
-                    //             // Image::make($image_tmp)->resize(68, 68)->save($small_image_path);
-                    //             Image::make($image_tmp)->resize(1500, 1500)->save($large_image_path);
-                    //             // Image::make($image_tmp)->resize(255, 255)->save($midium_image_path);
-
-                    //             $product_img = new Product_image;
-                    //             $product_img->product_id = 1;
-                    //             $product_img->image = $multiple_image_name;
-                    //             $product_img->save();
-                    //         }
-                    //     }
-                    // }
-                    // die;
-
                     // PRODUCT THUMBEL IMAGE UPLOAD
                     if ($request->hasFile('product_image')) {
                         $image_tmp = $request->file('product_image');
                         if ($image_tmp->isValid()) {
                             // DELETE PREVIOUS IMAGE
-                            $previous_image_path = 'images/product_image/' . $products->product_image;
-                            if (File::exists($previous_image_path)) {
-                                File::delete($previous_image_path);
+                            $previous_image_path_large = 'images/product_image/large_img' . $products->product_image;
+                            $previous_image_path_medium = 'images/product_image/midium_img' . $products->product_image;
+                            if (File::exists($previous_image_path_large)) {
+                                File::delete($previous_image_path_large);
+                                File::delete($previous_image_path_medium);
                             }
                             // GET FULL IMAGE NAME WITH EXTENTION
                             $image_full_name = $image_tmp->getClientOriginalName();

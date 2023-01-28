@@ -23,12 +23,15 @@ return new class extends Migration
             $table->string('admin_type');
             $table->string('product_name');
             $table->string('product_code');
+            $table->string('product_group_code');
             $table->string('product_color');
             $table->string('product_price');
             $table->string('product_discount');
             $table->string('product_weight');
             $table->string('product_image');
             $table->string('product_video');
+            $table->string('stock');
+            $table->string('stock_limit_alert');
             $table->longText('product_description');
             $table->string('meta_title');
             $table->text('meta_description');

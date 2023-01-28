@@ -1,9 +1,10 @@
 @php
     use App\Models\Section;
+    use App\Models\Cart;
     $sections = Section::section();
-    // echo '<pre>';
-    // print_r($section);
-    // die();
+
+    $cartItems = Cart::cartItem(Cookie::get('new_cookie_id'));
+
 @endphp
 
 <header>
@@ -136,11 +137,13 @@
                                 </a>
                             </li>
                             <li>
-                                <a id="mini-cart-trigger">
-                                    <i class="ion ion-md-basket"></i>
-                                    <span class="item-counter">4</span>
-                                    <span class="item-price">$220.00</span>
-                                </a>
+                                @foreach ($cartItems as $cartItem)
+                                    <a id="mini-cart-trigger">
+                                        <i class="ion ion-md-basket"></i>
+                                        <span class="item-counter">{{ $cartItem['countCartItems'] }}</span>
+                                        <span class="item-price">&#x9F3; {{ $cartItem['totalCartPrice'] }}</span>
+                                    </a>
+                                @endforeach
                             </li>
                         </ul>
                     </nav>
@@ -172,45 +175,28 @@
                 <button type="button" class="button ion ion-md-close" id="mini-cart-close"></button>
             </div>
             <ul class="mini-cart-list">
-                <li class="clearfix">
-                    <a href="single-product.html">
-                        <img src="{{ asset('customer') }}/images/product/product@1x.jpg" alt="Product">
-                        <span class="mini-item-name">Product name</span>
-                        <span class="mini-item-price">$100.00</span>
-                        <span class="mini-item-quantity"> x 1 </span>
-                    </a>
-                </li>
-                <li class="clearfix">
-                    <a href="single-product.html">
-                        <img src="{{ asset('customer') }}/images/product/product@1x.jpg" alt="Product">
-                        <span class="mini-item-name">Product name</span>
-                        <span class="mini-item-price">$100.00</span>
-                        <span class="mini-item-quantity"> x 1 </span>
-                    </a>
-                </li>
-                <li class="clearfix">
-                    <a href="single-product.html">
-                        <img src="{{ asset('customer') }}/images/product/product@1x.jpg" alt="Product">
-                        <span class="mini-item-name">Product name</span>
-                        <span class="mini-item-price">$100.00</span>
-                        <span class="mini-item-quantity"> x 1 </span>
-                    </a>
-                </li>
-                <li class="clearfix">
-                    <a href="single-product.html">
-                        <img src="{{ asset('customer') }}/images/product/product@1x.jpg" alt="Product">
-                        <span class="mini-item-name">Product name</span>
-                        <span class="mini-item-price">$100.00</span>
-                        <span class="mini-item-quantity"> x 1 </span>
-                    </a>
-                </li>
+
+                @foreach ($cartItems as $cartItem)
+                    @foreach ($cartItem['cartItems'] as $item)
+                        <li class="clearfix">
+                            <a href="single-product.html">
+                                <img src="{{ url('images/product_image/midium_img/'.$item->cart->product_image) }}" alt="Product">
+                                <span class="mini-item-name">{{ $item->cart->product_name }}</span>
+                                <span class="mini-item-price">&#x9F3; {{ $item['sell_price'] }}</span>
+                                <span class="mini-item-quantity"> x {{ $item['quantity'] }} </span>
+                            </a>
+                        </li>
+                    @endforeach
+                @endforeach
             </ul>
             <div class="mini-shop-total clearfix">
                 <span class="mini-total-heading float-left">Total:</span>
-                <span class="mini-total-price float-right">$400.00</span>
+                @foreach ($cartItems as $cartItem)
+                    <span class="mini-total-price float-right">&#x9F3; {{ $cartItem['totalCartPrice'] }}</span>
+                @endforeach
             </div>
             <div class="mini-action-anchors">
-                <a href="cart.html" class="cart-anchor">View Cart</a>
+                <a href="{{ url('cart') }}" class="cart-anchor">View Cart</a>
                 <a href="checkout.html" class="checkout-anchor">Checkout</a>
             </div>
         </div>
@@ -248,15 +234,14 @@
                                                         <div class="col-lg-4">
                                                             <ul class="v-level-2">
                                                                 <li>
-                                                                    <a href="{{ url('/'.$category['url']) }}">{{ $category['name'] }}</a>
+                                                                    <a
+                                                                        href="{{ url('/' . $category['url']) }}">{{ $category['name'] }}</a>
                                                                     <ul>
                                                                         @foreach ($category['subcategory'] as $subCategory)
-
-                                                                        <li>
-                                                                            <a
-                                                                                href="{{ url('/'.$subCategory['url']) }}">{{$subCategory['name']}}</a>
-                                                                        </li>
-
+                                                                            <li>
+                                                                                <a
+                                                                                    href="{{ url('/' . $subCategory['url']) }}">{{ $subCategory['name'] }}</a>
+                                                                            </li>
                                                                         @endforeach
                                                                     </ul>
                                                                 </li>

@@ -197,5 +197,18 @@ Route::namespace("App\Http\Controllers\customer")->group(function () {
     };
 
     // SINGLE PRODUCT VIEW PAGE
-    Route::get("/single-product/{id}", "IndexController@singleProduct");
+    Route::match(['get', 'post'], "/single-product/{id}", "IndexController@singleProduct");
+
+    // GET PRICE ACCODING TO CHANGING PRODUCT SIZE
+    Route::get("/get_attr_price/{attr_id}", "IndexController@getPriceBySize");
+
+    // ADD TO CART FROM SINGLE PRODUCT PAGE
+    Route::post('/add-to-cart', "IndexController@addToCart");
+
+    // VIEW CART PAGE
+    Route::get("/cart", "CartController@cart");
+
+    // UPDATE CART BY AJAX
+    Route::post("/update-cart", "CartController@updateCart");
+
 });
