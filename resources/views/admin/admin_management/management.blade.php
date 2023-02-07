@@ -36,7 +36,12 @@
                                 @foreach($admins as $admin)
                                 <tr>
                                     <td class="py-1">
+                                        @if (isset($admin['image']))
                                         <img src="{{ url('images/admin/'.$admin['image']) }}" alt="image">
+                                        @else
+                                        <img src=" {{ url('images/dummy_img/vendor-no-img.png') }}"
+                                        alt="vendor-no-img.png">
+                                        @endif
                                     </td>
                                     <td> {{ $admin['name'] }} </td>
                                     <td> {{ $admin['type'] }} </td>

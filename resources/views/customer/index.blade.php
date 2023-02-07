@@ -9,18 +9,14 @@
     <!-- Main-Slider -->
     <div class="default-height ph-item">
         <div class="slider-main owl-carousel">
-            <div class="bg-image">
-                <div class="slide-content">
-                    <h1><img src="{{ asset('customer') }}/images/banners/banner-1.png"></h1>
-                    <h2>Spring Collection</h2>
+            @foreach ($sliders as $slider)
+                <div class="bg-image">
+                    <div class="slide-content">
+                        <h1><img src="{{ url('images/banner_image/slider_img/' . $slider->image) }}"></h1>
+                        <h2>{{ $slider->banner_title }}</h2>
+                    </div>
                 </div>
-            </div>
-            <div class="bg-image">
-                <div class="slide-content">
-                    <h1><img src="{{ asset('customer') }}/images/banners/banner-2.png"></h1>
-                    <h2>Summer Collection</h2>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
     <!-- Main-Slider /- -->
@@ -28,11 +24,13 @@
     <div class="banner-layer">
         <div class="container">
             <div class="image-banner">
-                <a target="_blank" rel="nofollow" href="https://youtube.com/stackdevelopers"
-                    class="mx-auto banner-hover effect-dark-opacity">
-                    <img class="img-fluid" src="{{ asset('customer') }}/images/banners/stack-developers.png"
-                        alt="Winter Season Banner">
-                </a>
+                @foreach ($subBanners as $subBanner)
+                    <a target="_blank" rel="nofollow" href="https://youtube.com/stackdevelopers"
+                        class="mx-auto banner-hover effect-dark-opacity">
+                        <img class="img-fluid" src="{{ url('images/banner_image/sub_banner_img/' . $subBanner->image) }}"
+                            alt="Winter Season Banner">
+                    </a>
+                @endforeach
             </div>
         </div>
     </div>

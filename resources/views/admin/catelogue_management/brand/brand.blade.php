@@ -84,21 +84,28 @@
                                                 </td>
                                             @endif
 
-                                            @if (Auth::guard('admin')->user()->id == $brand['admin_id'])
+                                            @if (Auth::guard('admin')->user()->type == 'Vendor')
+                                                @if (Auth::guard('admin')->user()->status != 1 || Auth::guard('admin')->user()->id != $brand['admin_id'])
+                                                    <td></td>
+                                                @else
+                                                    <td class="action_collum">
+                                                        <a href="{{ url('admin/add-edit-brand/' . $brand['id']) }}"
+                                                            class="text-info">
+                                                            <i class="mdi mdi-table-edit"></i>
+                                                        </a>
+                                                    </td>
+                                                @endif
+                                            @else
                                                 <td class="action_collum">
                                                     <a href="{{ url('admin/add-edit-brand/' . $brand['id']) }}"
                                                         class="text-info">
                                                         <i class="mdi mdi-table-edit"></i>
                                                     </a>
-                                                    @if (Auth::guard('admin')->user()->type != 'Vendor')
-                                                        <a href="javascript:void(0)" class="delete_row text-danger"
-                                                            delete_id="{{ $brand['id'] }}" delete_path="brand">
-                                                            <i class="mdi mdi-delete-forever"></i>
-                                                        </a>
-                                                    @endif
+                                                    <a href="javascript:void(0)" class="delete_row text-danger"
+                                                        delete_id="{{ $brand['id'] }}" delete_path="brand">
+                                                        <i class="mdi mdi-delete-forever"></i>
+                                                    </a>
                                                 </td>
-                                            @else
-                                                <td></td>
                                             @endif
                                         </tr>
                                     @endforeach

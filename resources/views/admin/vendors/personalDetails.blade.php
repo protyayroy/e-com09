@@ -79,6 +79,13 @@
                                     <div class="text-danger">{{ $message }}*</div>
                                     @enderror
                                 </div>
+                                @if (!empty(Auth::guard('admin')->user()->image))
+                                <a class="float-right" href="{{ url('images/admin/' . Auth::guard('admin')->user()->image) }}">
+                                    <img src="{{ url('images/admin/' . Auth::guard('admin')->user()->image) }}"
+                                        alt="{{Auth::guard('admin')->user()->image}}" height="100px">
+                                </a>
+                                @endif
+                                <div class="clr"></div>
                                 <div class="form-group">
                                     <label for="image">Profile Picture:</label>
                                     <input type="file" class="form-control" id="image" name="image">

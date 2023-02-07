@@ -15,55 +15,52 @@ use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
     //  VENDOR DETAILS FOR ADMIN VIEW
-    public function viewVendorDetails($id){
+    public function viewVendorDetails($id)
+    {
         $personal = Vendor::with('bank', 'business')->where('id', $id)->first()->toArray();
         $vendor = Admin::where('vendor_id', $id)->first()->toArray();
 
         return view('admin.admin_management.vendorDetails', compact('personal', 'vendor'));
-
     }
 
     //  ADMIN MANAGEMENT
-    public function adminManagement($type=null)
+    public function adminManagement($type = null)
     {
-        if($type == 'Admin' || $type == 'Subadmin' || $type == 'Vendor'){
+        if ($type == 'Admin' || $type == 'Subadmin' || $type == 'Vendor') {
             $admins = Admin::where('type', $type)->get()->toArray();
-            $title = $type.'s';
-            return view('admin.admin_management.management')->with(compact('type','admins','title'));
-
-        }else{
+            $title = $type . 's';
+            return view('admin.admin_management.management')->with(compact('type', 'admins', 'title'));
+        } else {
             $admins = Admin::get()->toArray();
-            $title = $type.' Admins,Subadmins,Vendors';
-            return view('admin/admin_management/management')->with(compact('type','admins','title'));
+            $title = $type . ' Admins,Subadmins,Vendors';
+            return view('admin/admin_management/management')->with(compact('type', 'admins', 'title'));
         }
-
     }
 
     //  UPDATE ADMIN STATUS
     public function updateAdminStatus(Request $request)
     {
-        if($request->ajax()){
+        if ($request->ajax()) {
             $data = $request->all();
             // echo '<pre/>'; print_r ($data['status']); die;
-            if($data['status'] == 'Active'){
+            if ($data['status'] == 'Active') {
                 $status = 0;
-            } else{
+            } else {
                 $status = 1;
             }
-            Admin::where('vendor_id', $data['status_id'])->update([ 'status'=>$status ]);
+            Admin::where('vendor_id', $data['status_id'])->update(['status' => $status]);
 
             return response()->json(['status' => $status, 'status_id' => $data['status_id']]);
         }
-
     }
 
-    //  VIEW UPDATE VENDORS DETAILS
-    public function updateVendorDetails(Request $request, $slug)
+    // ADD/EDIT VENDOR PERSONAL/BANK/BUSINESS DETAILS
+    public function addEditVendorDetails(Request $request, $slug)
     {
-        if ($slug == 'personal'){
+        if ($slug == 'personal') {
             if ($request->isMethod('post')) {
                 $request->validate([
-                    'name' => 'required|regex:/^[a-zA-Z0-9\p{Arabic}_]+ [a-zA-Z0-9\p{Arabic}_]+$/u',
+                    'name' => 'required',
                     'mobile' => 'required|numeric',
                     'address' => 'required',
                     'city' => 'required',
@@ -115,13 +112,19 @@ class AdminController extends Controller
                 'slugs' => $slug,
                 'personal' => Vendor::where('id', Auth::guard('admin')->user()->vendor_id)->first()->toArray()
             ]);
+        } else if ($slug == 'business') {
 
-        } else if($slug == 'business'){
+            $vendor_business_details = Vendor_business_detail::where('vendor_id', Auth::guard('admin')->user()->vendor_id)->first();
+            if (!empty($vendor_business_details)) {
+                $vendor_business_details = $vendor_business_details;
+            } else {
+                $vendor_business_details = new Vendor_business_detail;
+            }
             // UPDATE BUSINESS DETAILS
-            if($request->isMethod('post')){
+            if ($request->isMethod('post')) {
                 $request->validate([
                     'shop_name' => 'required',
-                    'shop_email' => 'required',
+                    'shop_email' => 'required|email',
                     'shop_address' => 'required',
                     'shop_city' => 'required',
                     'shop_state' => 'required',
@@ -134,11 +137,10 @@ class AdminController extends Controller
                     'gst_number' => 'required',
                     'pan_number' => 'required'
                 ]);
-                $proof_img = Vendor_business_detail::where('vendor_id', Auth::guard('admin')->user()->vendor_id)->first()->toArray();
-                // dd($admin);
+
                 if ($request->hasFile('address_proof_image')) {
                     // Previous image delete
-                    $previous_img = 'images/address_proof_image/' . $proof_img['address_proof_image'];
+                    $previous_img = 'images/address_proof_image/' . $vendor_business_details['address_proof_image'];
                     if (File::exists($previous_img)) {
                         File::delete($previous_img);
                     }
@@ -148,40 +150,49 @@ class AdminController extends Controller
                     $img->move(public_path('images/address_proof_image'), $image);
                 } else {
 
-                    $image = $proof_img['address_proof_image'];
+                    $image = $vendor_business_details['address_proof_image'];
                 }
 
                 $data = $request->all();
-                // echo '<pre>'; print_r($data); die;
-                Vendor_business_detail::where('vendor_id', Auth::guard('admin')->user()->vendor_id)->update([
-                    'shop_name' => $data['shop_name'],
-                    'shop_email' => $data['shop_email'],
-                    'shop_address' => $data['shop_address'],
-                    'shop_city' => $data['shop_city'],
-                    'shop_state' => $data['shop_state'],
-                    'shop_country' => $data['shop_country'],
-                    'shop_pincode' => $data['shop_pincode'],
-                    'shop_mobile' => $data['shop_mobile'],
-                    'shop_website' => $data['shop_website'],
-                    'address_proof' => $data['address_proof'],
-                    'business_license_number' => $data['business_license_number'],
-                    'gst_number' => $data['gst_number'],
-                    'pan_number' => $data['pan_number'],
-                    'address_proof_image' => $image
-                ]);
+
+                $vendor_business_details->vendor_id = Auth::guard('admin')->user()->vendor_id;
+                $vendor_business_details->shop_name = $data['shop_name'];
+                $vendor_business_details->shop_email = $data['shop_email'];
+                $vendor_business_details->shop_address = $data['shop_address'];
+                $vendor_business_details->shop_city = $data['shop_city'];
+                $vendor_business_details->shop_state = $data['shop_state'];
+                $vendor_business_details->shop_country = $data['shop_country'];
+                $vendor_business_details->shop_pincode = $data['shop_pincode'];
+                $vendor_business_details->shop_mobile = $data['shop_mobile'];
+                $vendor_business_details->shop_website = $data['shop_website'];
+                $vendor_business_details->address_proof = $data['address_proof'];
+                $vendor_business_details->business_license_number = $data['business_license_number'];
+                $vendor_business_details->gst_number = $data['gst_number'];
+                $vendor_business_details->pan_number = $data['pan_number'];
+                $vendor_business_details->address_proof_image = $image;
+                $vendor_business_details->save();
 
                 return back()->with('success_msg', 'Business details has been submitted');
-
             }
+
 
             // VIEW BUSINESS DETAILS
             return view('admin.vendors.businessDetails', [
                 'slugs' => $slug,
-                'business' => Vendor_business_detail::where('vendor_id', Auth::guard('admin')->user()->vendor_id)->first()->toArray()
+                'business' => $vendor_business_details
             ]);
-        } else if($slug == 'bank'){
+        } else if ($slug == 'bank') {
             // UPDATE BUSINESS DETAILS
-            if($request->isMethod('post')){
+            $vendor_bank_details = Vendor_bank_detail::where('vendor_id', Auth::guard('admin')->user()->vendor_id)->first();
+
+            if (!empty($vendor_bank_details)) {
+                $vendor_bank_details = $vendor_bank_details;
+            } else {
+                $vendor_bank_details = new Vendor_bank_detail;
+            }
+
+
+            if ($request->isMethod('post')) {
                 $request->validate([
                     'account_holder_name' => 'required',
                     'bank_name' => 'required',
@@ -191,21 +202,21 @@ class AdminController extends Controller
 
                 $data = $request->all();
                 // echo '<pre>'; print_r($data); die;
-                Vendor_bank_detail::where('vendor_id', Auth::guard('admin')->user()->vendor_id)->update([
-                    'account_holder_name' => $data['account_holder_name'],
-                    'bank_name' => $data['bank_name'],
-                    'account_number' => $data['account_number'],
-                    'bank_ifsc_code' => $data['bank_ifsc_code']
-                ]);
+
+                $vendor_bank_details->vendor_id = Auth::guard('admin')->user()->vendor_id;
+                $vendor_bank_details->account_holder_name = $data['account_holder_name'];
+                $vendor_bank_details->bank_name = $data['bank_name'];
+                $vendor_bank_details->account_number = $data['account_number'];
+                $vendor_bank_details->bank_ifsc_code = $data['bank_ifsc_code'];
+                $vendor_bank_details->save();
 
                 return back()->with('success_msg', 'Bank details has been submitted');
-
             }
 
             // VIEW BUSINESS DETAILS
             return view('admin.vendors.bankDetails', [
                 'slugs' => $slug,
-                'bank' => Vendor_bank_detail::where('vendor_id', Auth::guard('admin')->user()->vendor_id)->first()->toArray()
+                'bank' => $vendor_bank_details
             ]);
         }
     }
@@ -297,9 +308,9 @@ class AdminController extends Controller
     {
         $data = $request->all();
         // echo "<pre>"; print_r($data); die;
-        if($data['password'] == ""){
+        if ($data['password'] == "") {
             return "";
-        }else if (Hash::check($data['password'], Auth::guard('admin')->user()->password)) {
+        } else if (Hash::check($data['password'], Auth::guard('admin')->user()->password)) {
             return 'true';
         } else {
             return 'false';
@@ -312,8 +323,7 @@ class AdminController extends Controller
         if ($request->isMethod('post')) {
             $data = $request->all();
             if (Auth::guard('admin')->attempt([
-                'email' => $data['email'], 'password' => $data['password'],
-                'status' => 1
+                'email' => $data['email'], 'password' => $data['password']
             ])) {
                 return redirect('/admin/dashboard');
             } else {
@@ -329,6 +339,4 @@ class AdminController extends Controller
         Auth::guard('admin')->logout();
         return redirect('admin/login');
     }
-
-
 }

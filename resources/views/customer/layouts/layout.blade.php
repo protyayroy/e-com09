@@ -34,9 +34,13 @@
     <link rel="stylesheet" href="{{ asset('customer') }}/css/utility.css">
     <!-- Main -->
     <link rel="stylesheet" href="{{ asset('customer') }}/css/bundle.css">
+    <link rel="stylesheet" href="{{ asset('customer') }}/css/custom.css">
 </head>
 
 <body>
+    <div class="loader">
+        <img src="{{ asset('images/pre_loder/loading-loading-gif.gif')}}" alt="loading..." />
+     </div>
 
     <!-- app -->
     <div id="app">

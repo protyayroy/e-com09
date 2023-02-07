@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('type');
             $table->integer('vendor_id');
-            $table->string('mobile');
+            $table->string('mobile')->nullable();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('image');
+            $table->string('email_confirmation');
+            $table->string('image')->nullable();
             $table->tinyInteger('status');
             $table->timestamps();
         });

@@ -35,7 +35,7 @@ class ProductController extends Controller
             }
             return view('admin.catelogue_management.product.product', compact('products'));
         }else{
-            return redirect('admin/login')->with('error_msg', 'You should login first!');
+            return redirect('admin/login')->with('error_msg', 'Your account is not Active. Please wait for admin approve!');
         }
     }
 

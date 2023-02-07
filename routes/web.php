@@ -60,6 +60,9 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\admin')->group(function
         // UPDATE ADMIN PROFILE
         Route::match(['post', 'get'], 'update-profile', 'AdminController@updateAdminProfile');
 
+        // ADD/EDIT VENDOR PERSONAL/BANK/BUSINESS DETAILS
+        Route::match(['post', 'get'], 'details/{details_type}', 'AdminController@addEditVendorDetails');
+
         // VIEW ADMIN DETAILS
         Route::get('admin-management/{type}', 'AdminController@adminManagement');
 
@@ -171,7 +174,33 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\admin')->group(function
         // DELETE FILTER VALUES
         Route::get('delete-filter-value/{id}', 'ProductsFiltersValueController@destroy');
 
+
         Route::get('change_filter', 'ProductController@filter');
+
+
+        // VIEW SLIDER BANNER
+        Route::get('banner-management/slider', 'BannerController@slider');
+
+        // ADD SLIDER BANNER
+        Route::post('banner-management/slider/add-slider', 'BannerController@addSlider');
+
+        // Edit SLIDER BANNER
+        Route::post('banner-management/slider/edit-slider/{slider_id}', 'BannerController@updateSlider');
+
+        // DELETE SLIDER BANNER
+        Route::get('banner-management/delete-slider-image/{slider_id}', 'BannerController@destroy_slider');
+
+        // VIEW SUB-BANNER
+        Route::get('banner-management/sub-banner', 'BannerController@subBanner');
+
+        // ADD SUB-BANNER
+        Route::post('banner-management/sub-banner/add-sub_banner', 'BannerController@addSubBanner');
+
+        // Edit SUB-BANNER
+        Route::post('banner-management/sub-banner/edit-sub_banner/{subBanner_id}', 'BannerController@updateSubBanner');
+
+        // DELETE SUB-BANNER
+        Route::get('banner-management/delete-sub-banner/{subBanner_id}', 'BannerController@destroy_subBanner');
     });
 });
 
@@ -186,6 +215,9 @@ Route::namespace("App\Http\Controllers\customer")->group(function () {
 
     // STARTNG PAGE
     Route::get("/", "IndexController@index");
+
+    // STARTNG PAGE
+    Route::get("new-arrival", "IndexController@newArrival");
 
     $catUrls = Category::select('url')->where('status', 1)->get()->pluck('url');
     foreach ($catUrls as $key => $url) {
@@ -210,5 +242,41 @@ Route::namespace("App\Http\Controllers\customer")->group(function () {
 
     // UPDATE CART BY AJAX
     Route::post("/update-cart", "CartController@updateCart");
+
+    // DELETE CART ITEM
+    Route::get("/delete-cart-item/{id}", "CartController@delete");
+
+    // VIEW USER LOGIN/REGISTRATION PAGE
+    Route::get('user/login-registration', "UserAccount@viewPage");
+
+    // USER REGISTRATION
+    Route::post('user/registration', "UserAccount@registration");
+
+    // USER ACCOUNT CONFORMATION
+    Route::get('confirm/{code}', "UserAccount@confirm");
+
+    // USER LOGIN
+    Route::get('user/login', "UserAccount@login");
+
+    // USER LOGOUT
+    Route::get('user/logout', "UserAccount@logout");
+
+    // VIEW checkout PAGE
+    Route::get("/checkout", "CartController@checkout");
+
+
+
+
+    // VIEW VENDOR LOGIN/REGISTRATION PAGE
+    Route::get('vendor/login-registration', "VendorController@vendor");
+
+    // VENDOR REGISTRATION
+    Route::post('vendor/registration', "VendorController@registration");
+
+    // VENDOR ACCOUNT CONFORMATION
+    Route::get('vendor-confirm/{code}', "VendorController@confirm");
+
+    // VENDOR LOGIN
+    Route::get('vendor/login', "VendorController@login");
 
 });

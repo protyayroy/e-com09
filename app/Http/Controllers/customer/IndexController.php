@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Banner;
 use App\Models\Recent_view;
 use App\Models\Cart;
 use App\Models\Category;
@@ -11,6 +12,7 @@ use App\Models\Product_image;
 use App\Models\ProductAttribute;
 use App\Models\Products_filter;
 use App\Models\Section;
+use App\Models\Sub_banner;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -21,10 +23,19 @@ use Nette\Utils\Random;
 
 class IndexController extends Controller
 {
+    function newArrival()
+    {
+        return view('customer.new-arrival', [
+            'products' => Product::where('status', 1)->orderby("products.id", "DESC")->get()
+        ]);
+    }
+
     public function index()
     {
         return view("customer.index", [
-            'products' => Product::where('status', 1)->orderBy('id', 'DESC')->get()
+            'products' => Product::where('status', 1)->orderBy('id', 'DESC')->get(),
+            'sliders' => Banner::all(),
+            'subBanners' => Sub_banner::all()
         ]);
     }
 
@@ -224,12 +235,12 @@ class IndexController extends Controller
         // dd($request->all());
 
         if ($data['quantity'] > $data['letest_stock']) {
-            return back()->with('error_msg', "<b>". $data['letest_stock'] . "</b> Item's are avaleable for this product. Please give right quantity to buy this product");
+            return back()->with('error_msg', "<b>" . $data['letest_stock'] . "</b> Item's are avaleable for this product. Please give right quantity to buy this product");
         } else {
 
             if (isset($data['size'])) {
                 $size = $data['size'];
-            }else{
+            } else {
                 $size = '';
             }
 
@@ -237,16 +248,17 @@ class IndexController extends Controller
             $updateCart = Cart::where(['cookie_id' => $cookie_id, 'product_id' => $data['product_id'], 'size' => $size])->first();
 
             if (!empty($updateCart)) {
-                $quantity = $updateCart['quantity'] + $data['quantity'];
-                if ($quantity > $data['letest_stock']) {
-                    return back()->with('error_msg',"You have already add <b>".$updateCart['quantity']."</b> Item's in your cart. And <b>". $data['letest_stock'] . "</b> Item's are avaleable. Please give right quantity to buy this product");
-                }else{
-                    $updateCart->quantity = $quantity;
-                    $updateCart->sell_price = $data['product_price'];
-                    $updateCart->save();
+                // $quantity = $updateCart['quantity'] + $data['quantity'];
+                // if ($quantity > $data['letest_stock']) {
+                //     return back()->with('error_msg',"You have already add <b>".$updateCart['quantity']."</b> Item's in your cart. And <b>". $data['letest_stock'] . "</b> Item's are avaleable. Please give right quantity to buy this product");
+                // }else{
+                //     $updateCart->quantity = $quantity;
+                //     $updateCart->sell_price = $data['product_price'];
+                //     $updateCart->save();
 
-                    return back()->with('success_msg', "This item quantity successfully updated in Cart");
-                }
+                //     return back()->with('success_msg', "This item quantity successfully updated in Cart");
+                // }
+                return back()->with('error_msg', "<strong>Error :</strong> This item already added in your Cart! <a href='/cart' class='text-info'>View Cart.</a>");
             } else {
                 $request->validate([
                     'cookie_id' => 'unique:carts,cookie_id'
@@ -265,10 +277,8 @@ class IndexController extends Controller
                 $cart->sell_price = $data['product_price'];
                 $cart->save();
 
-                return back()->with('success_msg', "This item successfully added in Cart");
+                return back()->with('success_msg', "<strong>Success :</strong> This item successfully added in Cart! <a href='/cart' class='text-warning'>View Cart.</a>");
             }
         }
     }
-
-    
 }

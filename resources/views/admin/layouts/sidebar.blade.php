@@ -1,5 +1,28 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
+        {{-- @if (Auth::guard('admin')->user()->type == 'Vendor' && Auth::guard('admin')->user()->status == 0)
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#ui-details" aria-expanded="false"
+                    aria-controls="ui-details">
+                    <i class="mdi mdi-information-outline menu-icon"></i>
+                    <span class="menu-title">Vendor Details</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="ui-details">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('admin/details/personal') }}">Personal Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('admin/details/business') }}">Business Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('admin/details/bank') }}">Bank Details</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        @else --}}
         <li class="nav-item">
             <a class="nav-link" href="{{ url('admin/dashboard') }}">
                 <i class="icon-grid menu-icon"></i>
@@ -24,7 +47,57 @@
                 </ul>
             </div>
         </li>
-        @if (Auth::guard('admin')->user()->type !== 'Vendor')
+        @if (Auth::guard('admin')->user()->type === 'Vendor')
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#ui-details" aria-expanded="false"
+                    aria-controls="ui-details">
+                    <i class="mdi mdi-information-outline menu-icon"></i>
+                    <span class="menu-title">Vendor Details</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="ui-details">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('admin/details/personal') }}">Personal Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('admin/details/business') }}">Business Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('admin/details/bank') }}">Bank Details</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#ui-category" aria-expanded="false"
+                    aria-controls="ui-management">
+                    <i class="mdi mdi-book-multiple menu-icon"></i>
+                    <span class="menu-title">Catelogue Management</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="ui-category">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('admin/section') }}">Sections</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('admin/brand') }}">Brands</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('admin/category') }}">Categories</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('admin/product') }}">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('admin/filter') }}">Filters</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        @else
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#ui-management" aria-expanded="false"
                     aria-controls="ui-management">
@@ -76,57 +149,28 @@
                     </ul>
                 </div>
             </li>
-        @else
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#ui-details" aria-expanded="false"
-                    aria-controls="ui-details">
-                    <i class="mdi mdi-information-outline menu-icon"></i>
-                    <span class="menu-title">Vendor Details</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="ui-details">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('admin/details/personal') }}">Personal Details</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('admin/details/business') }}">Business Details</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('admin/details/bank') }}">Bank Details</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
 
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#ui-category" aria-expanded="false"
-                    aria-controls="ui-management">
-                    <i class="mdi mdi-book-multiple menu-icon"></i>
-                    <span class="menu-title">Catelogue Management</span>
+                <a class="nav-link" data-toggle="collapse" href="#ui-banner" aria-expanded="false"
+                    aria-controls="ui-banner">
+                    <i class="mdi mdi-image-area menu-icon"></i>
+                    <span class="menu-title">Banner Management</span>
                     <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="ui-category">
+                <div class="collapse" id="ui-banner">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('admin/section') }}">Sections</a>
+                            <a class="nav-link" href="{{ url('admin/banner-management/slider') }}">Slider Banner</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('admin/brand') }}">Brands</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('admin/category') }}">Categories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('admin/product') }}">Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('admin/filter') }}">Filters</a>
+                            <a class="nav-link" href="{{ url('admin/banner-management/sub-banner') }}">Sub Banner</a>
                         </li>
                     </ul>
                 </div>
             </li>
         @endif
+
+        {{-- @endif --}}
 
 
 

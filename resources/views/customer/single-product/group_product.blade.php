@@ -29,10 +29,9 @@
 
             @if (Session::has('error_msg'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Error:</strong>
                     @php
                         echo Session('error_msg');
-                    @endphp !
+                    @endphp
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -40,7 +39,10 @@
             @endif
             @if (Session::has('success_msg'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Success:</strong> {{ Session('success_msg') }}!
+                    {{-- <strong>Success:</strong> {{ Session('success_msg') }}! --}}
+                    @php
+                        echo Session('success_msg');
+                    @endphp
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

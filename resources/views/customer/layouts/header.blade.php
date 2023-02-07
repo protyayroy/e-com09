@@ -1,10 +1,9 @@
 @php
     use App\Models\Section;
-    use App\Models\Cart;
     $sections = Section::section();
 
-    $cartItems = Cart::cartItem(Cookie::get('new_cookie_id'));
-
+    $cartItems = cartItem(Cookie::get('new_cookie_id'));
+    // $countCartItems = countCartItem(Cookie::get('new_cookie_id'));
 @endphp
 
 <header>
@@ -29,62 +28,85 @@
             <nav>
                 <ul class="secondary-nav g-nav">
                     <li>
-                        <a>My Account
-                            <i class="fas fa-chevron-down u-s-m-l-9"></i>
-                        </a>
-                        <ul class="g-dropdown" style="width:200px">
-                            <li>
-                                <a href="cart.html">
-                                    <i class="fas fa-cog u-s-m-r-9"></i>
-                                    My Cart</a>
-                            </li>
-                            <li>
-                                <a href="wishlist.html">
-                                    <i class="far fa-heart u-s-m-r-9"></i>
-                                    My Wishlist</a>
-                            </li>
-                            <li>
-                                <a href="checkout.html">
-                                    <i class="far fa-check-circle u-s-m-r-9"></i>
-                                    Checkout</a>
-                            </li>
-                            <li>
-                                <a href="account.html">
-                                    <i class="fas fa-sign-in-alt u-s-m-r-9"></i>
-                                    Customer Login</a>
-                            </li>
-                            <li>
-                                <a href="account.html">
-                                    <i class="fas fa-sign-in-alt u-s-m-r-9"></i>
-                                    Vendor Login</a>
-                            </li>
-                        </ul>
+                        @if (Auth::check())
+                            <a>My Account
+                                <i class="fas fa-chevron-down u-s-m-l-9"></i>
+                            </a>
+                            <ul class="g-dropdown" style="width:200px">
+                                <li>
+                                    <a href="{{url('cart')}}">
+                                        <i class="fas fa-cog u-s-m-r-9"></i>
+                                        My Cart</a>
+                                </li>
+                                <li>
+                                    <a href="wishlist.html">
+                                        <i class="far fa-heart u-s-m-r-9"></i>
+                                        My Wishlist</a>
+                                </li>
+                                <li>
+                                    <a href="checkout.html">
+                                        <i class="far fa-check-circle u-s-m-r-9"></i>
+                                        Checkout</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('user/logout') }}">
+                                        <i class="fas fa-sign-in-alt u-s-m-r-9"></i>
+                                        Logout</a>
+                                </li>
+                            </ul>
+                        @else
+                            <a>Login/Registration
+                                <i class="fas fa-chevron-down u-s-m-l-9"></i>
+                            </a>
+                            <ul class="g-dropdown" style="width:200px">
+                                <li>
+                                    <a href="{{url('cart')}}">
+                                        <i class="fas fa-cog u-s-m-r-9"></i>
+                                        My Cart</a>
+                                </li>
+                                <li>
+                                    <a href="wishlist.html">
+                                        <i class="far fa-heart u-s-m-r-9"></i>
+                                        My Wishlist</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('user/login-registration') }}">
+                                        <i class="fas fa-sign-in-alt u-s-m-r-9"></i>
+                                        Customer Login</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('vendor/login-registration') }}">
+                                        <i class="fas fa-sign-in-alt u-s-m-r-9"></i>
+                                        Vendor Login</a>
+                                </li>
+                            </ul>
+                        @endif
                     </li>
                     <li>
-                        <a>USD
-                            <i class="fas fa-chevron-down u-s-m-l-9"></i>
+                        <a>TAKA
+                            {{-- <i class="fas fa-chevron-down u-s-m-l-9"></i> --}}
                         </a>
-                        <ul class="g-dropdown" style="width:90px">
+                        {{-- <ul class="g-dropdown" style="width:90px">
                             <li>
                                 <a href="#" class="u-c-brand">($) USD</a>
                             </li>
                             <li>
                                 <a href="#">(£) GBP</a>
                             </li>
-                        </ul>
+                        </ul> --}}
                     </li>
                     <li>
                         <a>ENG
-                            <i class="fas fa-chevron-down u-s-m-l-9"></i>
+                            {{-- <i class="fas fa-chevron-down u-s-m-l-9"></i> --}}
                         </a>
-                        <ul class="g-dropdown" style="width:70px">
+                        {{-- <ul class="g-dropdown" style="width:70px">
                             <li>
                                 <a href="#" class="u-c-brand">ENG</a>
                             </li>
                             <li>
                                 <a href="#">ARB</a>
                             </li>
-                        </ul>
+                        </ul> --}}
                 </ul>
             </nav>
         </div>
@@ -127,7 +149,7 @@
                     <nav>
                         <ul class="mid-nav g-nav">
                             <li class="u-d-none-lg">
-                                <a href="index.html">
+                                <a href="{{ url('/') }}">
                                     <i class="ion ion-md-home u-c-brand"></i>
                                 </a>
                             </li>
@@ -137,13 +159,13 @@
                                 </a>
                             </li>
                             <li>
-                                @foreach ($cartItems as $cartItem)
-                                    <a id="mini-cart-trigger">
-                                        <i class="ion ion-md-basket"></i>
-                                        <span class="item-counter">{{ $cartItem['countCartItems'] }}</span>
-                                        <span class="item-price">&#x9F3; {{ $cartItem['totalCartPrice'] }}</span>
-                                    </a>
-                                @endforeach
+                                <a id="mini-cart-trigger">
+                                    <i class="ion ion-md-basket"></i>
+                                    <span class="item-counter"
+                                        id="cart_count">{{ countCartItem(Cookie::get('new_cookie_id')) }}</span>
+                                    <span class="item-price cart_total_price">&#x9F3;
+                                        {{ cartTotalPrice(Cookie::get('new_cookie_id')) }}</span>
+                                </a>
                             </li>
                         </ul>
                     </nav>
@@ -175,25 +197,12 @@
                 <button type="button" class="button ion ion-md-close" id="mini-cart-close"></button>
             </div>
             <ul class="mini-cart-list">
-
-                @foreach ($cartItems as $cartItem)
-                    @foreach ($cartItem['cartItems'] as $item)
-                        <li class="clearfix">
-                            <a href="single-product.html">
-                                <img src="{{ url('images/product_image/midium_img/'.$item->cart->product_image) }}" alt="Product">
-                                <span class="mini-item-name">{{ $item->cart->product_name }}</span>
-                                <span class="mini-item-price">&#x9F3; {{ $item['sell_price'] }}</span>
-                                <span class="mini-item-quantity"> x {{ $item['quantity'] }} </span>
-                            </a>
-                        </li>
-                    @endforeach
-                @endforeach
+                @include('customer.layouts.header-cart-list')
             </ul>
             <div class="mini-shop-total clearfix">
                 <span class="mini-total-heading float-left">Total:</span>
-                @foreach ($cartItems as $cartItem)
-                    <span class="mini-total-price float-right">&#x9F3; {{ $cartItem['totalCartPrice'] }}</span>
-                @endforeach
+                <span class="mini-total-price cart_total_price float-right">&#x9F3;
+                    {{ cartTotalPrice(Cookie::get('new_cookie_id')) }}</span>
             </div>
             <div class="mini-action-anchors">
                 <a href="{{ url('cart') }}" class="cart-anchor">View Cart</a>
@@ -266,7 +275,7 @@
                 <div class="col-lg-9">
                     <ul class="bottom-nav g-nav u-d-none-lg">
                         <li>
-                            <a href="listing-without-filters.html">New Arrivals
+                            <a href="{{url('new-arrival')}}">New Arrivals
                                 <span class="superscript-label-new">NEW</span>
                             </a>
                         </li>
@@ -316,7 +325,7 @@
                                 <ul>
                                     <li class="menu-title">ACCOUNT</li>
                                     <li>
-                                        <a href="shop-v1-root-category.html">My Account</a>
+                                        <a href="{{ url('registration') }}">My Account</a>
                                     </li>
                                     <li>
                                         <a href="shop-v1-root-category.html">My Profile</a>
